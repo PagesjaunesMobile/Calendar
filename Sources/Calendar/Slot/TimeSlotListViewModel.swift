@@ -169,48 +169,53 @@ class TimeSlotListViewModel {
         let `self` = self,
         let day = self.dataController.selectedDayModel else { return }
 
-      let dayViewModel = DayViewModel(model: day, dataController: self.dataController)
+      DispatchQueue.main.async {
+        let dayViewModel = DayViewModel(model: day, dataController: self.dataController)
 
-      guard dayViewModel.noSlotAlviable == false else {
-        self.displayState = .timeSlotEmpty(
-          previousDayWithSlot: dayViewModel.getFirstDayWithSlotBeforeThisDay(),
-          nextDayWithSlot: dayViewModel.getNextDayWithSlotAfterThisDay())
-        self.delegate?.reloadSlots()
-        return
-      }
+        guard dayViewModel.noSlotAlviable == false else {
+          self.displayState = .timeSlotEmpty(
+            previousDayWithSlot: dayViewModel.getFirstDayWithSlotBeforeThisDay(),
+            nextDayWithSlot: dayViewModel.getNextDayWithSlotAfterThisDay())
+          self.delegate?.reloadSlots()
+          return
+        }
 
-      switch self.displayState {
-      case .timeSlot(day: let currentDay, period: _, slot: let slot):
-        if dayViewModel != currentDay {
-          self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: slot)
+        switch self.displayState {
+        case .timeSlot(day: let currentDay, period: _, slot: let slot):
+          if dayViewModel != currentDay {
+            self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: slot)
+            self.delegate?.reloadSlots()
+          }
+        case .timeSlotEmpty:
+          self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: nil)
+          self.delegate?.reloadSlots()
+
+        case .notReady:
+          self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: nil)
           self.delegate?.reloadSlots()
         }
-      case .timeSlotEmpty:
-        self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: nil)
-        self.delegate?.reloadSlots()
-
-      case .notReady:
-        self.displayState = .timeSlot(day: dayViewModel, period: self.getPeriod(for: dayViewModel), slot: nil)
-        self.delegate?.reloadSlots()
       }
     }
     self.dataController.selectedSlot.bind { [weak self] _, _ in
       guard let `self` = self else { return }
-      switch self.displayState {
-      case .notReady:
-        return
-      case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
-        return
-      case .timeSlot(day: let day, period: let period, slot: let slot):
-        if let timeSlotModel = self.dataController.selectedSlotModel {
-          let timeSlotViewModel = TimeSlotViewModel(model: timeSlotModel, dataController: self.dataController)
-          if let slot = slot, slot != timeSlotViewModel {
-            self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
-          } else if slot == nil {
-            self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
+
+      DispatchQueue.main.async {
+        switch self.displayState {
+        case .notReady:
+          return
+        case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
+          return
+        case .timeSlot(day: let day, period: let period, slot: let slot):
+          if let timeSlotModel = self.dataController.selectedSlotModel {
+            let timeSlotViewModel = TimeSlotViewModel(model: timeSlotModel, dataController: self.dataController)
+            if let slot = slot, slot != timeSlotViewModel {
+              self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
+            } else if slot == nil {
+              self.displayState = .timeSlot(day: day, period: period, slot: timeSlotViewModel)
+            }
+          } else if slot != nil {
+            self.displayState = .timeSlot(day: day, period: period, slot: nil)
           }
-        } else if slot != nil {
-          self.displayState = .timeSlot(day: day, period: period, slot: nil)
         }
       }
     }

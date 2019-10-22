@@ -14,7 +14,7 @@ import UIKit
 ///
 /// - morning: morning period
 /// - afternoon: afternoon period
-enum SlotHeaderCellDelegatePeriod {
+public enum SlotHeaderCellDelegatePeriod {
   case morning
   case afternoon
 }
@@ -90,8 +90,10 @@ class SlotHeaderCell: UICollectionReusableView {
 
     viewModel.segmentedControlIndexToDisplay.bind { [weak self] _, indexToDisplay in
       guard let `self` = self else { return }
-      guard indexToDisplay >= 0, indexToDisplay < self.segmentedControl.numberOfSegments else { return }
-      self.segmentedControl.selectedSegmentIndex = indexToDisplay
+      DispatchQueue.main.async {
+        guard indexToDisplay >= 0, indexToDisplay < self.segmentedControl.numberOfSegments else { return }
+        self.segmentedControl.selectedSegmentIndex = indexToDisplay
+      }
     }
     self.segmentedControl.selectedSegmentIndex = viewModel.segmentedControlIndexToDisplay.value
   }

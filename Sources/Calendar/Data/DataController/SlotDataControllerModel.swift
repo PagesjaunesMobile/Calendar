@@ -10,7 +10,7 @@ import Foundation
 /// MARK: - SlotDataControllerModel
 
 /// Represent a Slot in the `CalendarDataController`
-struct SlotDataControllerModel {
+public struct SlotDataControllerModel {
 
   /// Stored code will passed trought the `CalendarViewControllerDelegate` if the user select this slot.
   let code: String
@@ -21,7 +21,7 @@ struct SlotDataControllerModel {
   /// Init of SlotDataControllerModel from a `SlotDataProviderModel`
   ///
   /// - Parameter model: slot returned by a `CalendarDataProvider` concrete instance
-  init(model: SlotDataProviderModel) {
+  public init(model: SlotDataProviderModel) {
     self.code = model.code
     self.originalDate = model.originalDate
   }
@@ -30,7 +30,7 @@ struct SlotDataControllerModel {
 /// MARK: - Equatable
 
 extension SlotDataControllerModel: Equatable {
-  static func == (lhrs: SlotDataControllerModel, rhs: SlotDataControllerModel) -> Bool {
+  public static func == (lhrs: SlotDataControllerModel, rhs: SlotDataControllerModel) -> Bool {
     return lhrs.code == rhs.code
   }
 }

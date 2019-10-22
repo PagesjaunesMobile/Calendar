@@ -39,9 +39,9 @@ class DaySelectorCell: UICollectionViewCell {
     return dest
   }()
 
-  private var style: CalendarStyle? {
+  private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupStyle()
+      self.setupTheme()
     }
   }
 
@@ -71,19 +71,19 @@ class DaySelectorCell: UICollectionViewCell {
     self.contentView.addSubview(self.dayNumberLabel)
   }
 
-  /// Setup cell style
-  private func setupStyle() {
-    guard let style = self.style else { return }
+  /// Setup cell Theme
+  private func setupTheme() {
+    guard let theme = self.theme else { return }
 
-    self.dayNumberLabel.font = style.daySelectorCell.dayNumberLabelFont
-    self.dayTextLabel.font = style.daySelectorCell.dayTextLabelFont
+    self.dayNumberLabel.font = theme.daySelectorCell.dayNumberLabelFont
+    self.dayTextLabel.font = theme.daySelectorCell.dayTextLabelFont
     self.dayTextLabel.textAlignment = .center
     self.dayNumberLabel.textAlignment = .center
-    self.dayTextLabel.textColor = style.daySelectorCell.dayTextLabelColor
-    self.dayNumberLabel.textColor = style.daySelectorCell.dayNumberLabelColor
+    self.dayTextLabel.textColor = theme.daySelectorCell.dayTextLabelColor
+    self.dayNumberLabel.textColor = theme.daySelectorCell.dayNumberLabelColor
   }
 
-  /// Setup cell style
+  /// Setup cell theme
   private func setup() {
     self.setupView()
     self.setupLayout()
@@ -94,10 +94,10 @@ class DaySelectorCell: UICollectionViewCell {
   /// Setup the cell with the given viewModel
   ///
   /// - Parameter model: viewModel to setup
-  func configure(model: DayViewModel, style: CalendarStyle) {
+  func configure(model: DayViewModel, theme: CalendarViewControllerTheme) {
     self.dayTextLabel.text = model.dayOfTheWeek
     self.dayNumberLabel.text = model.dayNumber
-    self.style = style
+    self.theme = theme
   }
 
   // MARK: Init

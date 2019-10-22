@@ -8,19 +8,17 @@
 import Foundation
 import UIKit
 
-// MARK: - CalendarViewControllerDelegate
+// MARK: CalendarViewControllerRequiredDelegate
 
-/// `CalendarViewController` Delegate, conform to this protocol to be notify of `CalendarViewController` user actions
-protocol CalendarViewControllerDelegate: class {
-
-  // MARK: Required
-
+public protocol CalendarViewControllerRequiredDelegate: class {
   /// Called when the user tap on the cancel button
   func calendar(_ calendar: CalendarViewController, didTapOnCancelButton button: UIButton)
 
   /// Called when the user tap on the OK button with a selectedDate
   func calendar(_ calendar: CalendarViewController, didTapOnOkButton selectedDate: Date, andCode code: String)
+}
 
+public protocol CalendarViewControllerOptionalDelegate: class {
   // MARK: Optional
 
   /// Called when the user tap on slot
@@ -51,9 +49,14 @@ protocol CalendarViewControllerDelegate: class {
   func calendar(_ calendar: CalendarViewController, didSelectPeriod period: SlotHeaderCellDelegatePeriod, onSender: UIView)
 }
 
+// MARK: - CalendarViewControllerDelegate
+
+/// `CalendarViewController` Delegate, conform to this protocol to be notify of `CalendarViewController` user actions
+public typealias CalendarViewControllerDelegate = CalendarViewControllerOptionalDelegate & CalendarViewControllerRequiredDelegate
+
 // MARK: - Optional Delegate extension
 
-extension CalendarViewControllerDelegate {
+extension CalendarViewControllerOptionalDelegate {
   func calendar(_ calendar: CalendarViewController, didTapOnNextDispoButton button: UIButton) {}
   func calendar(_ calendar: CalendarViewController, didTapOnPreviousDispoButton button: UIButton) {}
 

@@ -27,12 +27,12 @@ extension AvailableView {
     // MARK: Computed public properties
 
     /// Return a left or a right arrow image
-    func imageWith(style: CalendarStyle) -> UIImage {
+    func imageWith(theme: CalendarViewControllerTheme) -> UIImage {
       switch self {
       case .next:
-        return style.alviableView.alviableRightButtonImage
+        return theme.alviableView.alviableRightButtonImage
       case .previous:
-        return style.alviableView.alviableLeftButtonImage
+        return theme.alviableView.alviableLeftButtonImage
       }
     }
 
@@ -76,7 +76,7 @@ extension AvailableView {
 /// thoses days are display by this view
 class AvailableView: UIButton {
 
-  private let style: CalendarStyle
+  private let theme: CalendarViewControllerTheme
 
   // MARK: Public Properties
 
@@ -86,9 +86,9 @@ class AvailableView: UIButton {
   override var isHighlighted: Bool {
     didSet {
       if self.isHighlighted == true {
-        self.backgroundColor = self.style.alviableView.alviableHighlightBackgroundColor
+        self.backgroundColor = self.theme.alviableView.alviableHighlightBackgroundColor
       } else {
-        self.backgroundColor = self.style.alviableView.alviableNormalBackgroundColor
+        self.backgroundColor = self.theme.alviableView.alviableNormalBackgroundColor
       }
     }
   }
@@ -201,19 +201,19 @@ class AvailableView: UIButton {
     NSLayoutConstraint.activate(constraints)
   }
 
-  /// Setup the view style
+  /// Setup the view theme
   private func setupStyle() {
-    self.dayOfWeekLabel.font = style.alviableView.alviableDayOfWeekFont
-    self.dayOfWeekLabel.textColor = style.alviableView.alviableDayOfWeekColor
+    self.dayOfWeekLabel.font = theme.alviableView.alviableDayOfWeekFont
+    self.dayOfWeekLabel.textColor = theme.alviableView.alviableDayOfWeekColor
 
-    self.numberOfMonthLabel.font = style.alviableView.alviableDayNumberOfMonthFont
-    self.numberOfMonthLabel.textColor = style.alviableView.alviableDayNumberOfMonthColor
+    self.numberOfMonthLabel.font = theme.alviableView.alviableDayNumberOfMonthFont
+    self.numberOfMonthLabel.textColor = theme.alviableView.alviableDayNumberOfMonthColor
 
-    self.slotHourLabel.font = style.alviableView.alviableSlotHourLabelFont
-    self.slotHourLabel.textColor = style.alviableView.alviableSlotHourLabelTextColor
+    self.slotHourLabel.font = theme.alviableView.alviableSlotHourLabelFont
+    self.slotHourLabel.textColor = theme.alviableView.alviableSlotHourLabelTextColor
 
     self.layer.borderWidth = 1
-    self.layer.borderColor = style.alviableView.alviableSlotBorderColor.cgColor
+    self.layer.borderColor = theme.alviableView.alviableSlotBorderColor.cgColor
     self.layer.cornerRadius = 3
   }
 
@@ -227,7 +227,7 @@ class AvailableView: UIButton {
 
   /// Setup the arrow image and text
   private func setupMode() {
-    self.arrowImageView.image = self.mode.imageWith(style: self.style)
+    self.arrowImageView.image = self.mode.imageWith(theme: self.theme)
     self.dayOfWeekLabel.text = self.mode.dayOfWeeekText
     self.numberOfMonthLabel.text = self.mode.dayNumberText
     self.slotHourLabel.text = self.mode.hourText
@@ -235,7 +235,7 @@ class AvailableView: UIButton {
 
   /// Setup:
   /// - view hierarchy
-  /// - Style
+  /// - Theme
   /// - subview layout
   /// - setup mode
   private func setup() {
@@ -250,9 +250,9 @@ class AvailableView: UIButton {
   /// Init `AvailableView` according to the mode
   ///
   /// - Parameter mode: display mode
-  init(mode: Mode, style: CalendarStyle) {
+  init(mode: Mode, theme: CalendarViewControllerTheme) {
     self.mode = mode
-    self.style = style
+    self.theme = theme
     super.init(frame: .zero)
     self.setup()
   }

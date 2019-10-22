@@ -100,9 +100,11 @@ class DayViewModel {
     self.slotsViewModel.forEach { slot in
       slot.isSelected.bind(observer: { [weak self] _, isSelected in
         guard let `self` = self, isSelected == true else { return }
-        self.slotsViewModel.filter { elem in
-          elem != slot
-          }.forEach { $0.unSelect() }
+        DispatchQueue.main.async {
+          self.slotsViewModel.filter { elem in
+            elem != slot
+            }.forEach { $0.unSelect() }
+        }
       })
     }
   }

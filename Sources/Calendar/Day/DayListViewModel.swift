@@ -134,26 +134,29 @@ class DayListViewModel {
     self.dataController.days.bind { [weak self] _, newModels in
       guard let `self` = self else { return }
 
-      let newViewModels = newModels.map { DayViewModel(model: $0, dataController: self.dataController) }
-
-      switch self.displayState {
-      case .daySelected(day: let day, days: _):
-        self.displayState = .daySelected(day: day, days: newViewModels)
-        self.delegate?.shouldReloadDays()
-      case .notReady:
-        self.displayState = DisplayState(days: newViewModels)
-        self.delegate?.shouldReloadDays()
+      DispatchQueue.main.async {
+        let newViewModels = newModels.map { DayViewModel(model: $0, dataController: self.dataController) }
+        switch self.displayState {
+        case .daySelected(day: let day, days: _):
+          self.displayState = .daySelected(day: day, days: newViewModels)
+          self.delegate?.shouldReloadDays()
+        case .notReady:
+          self.displayState = DisplayState(days: newViewModels)
+          self.delegate?.shouldReloadDays()
+        }
       }
-    }
 
+    }
+    
     self.dataController.selectedDay.bind { [weak self] _, day in
       guard let `self` = self else { return }
-
-      switch self.displayState {
-      case .daySelected(day: _, days: let days):
-        self.displayState = .daySelected(day: day, days: days)
-      case .notReady:
-        break
+      DispatchQueue.main.async {
+        switch self.displayState {
+        case .daySelected(day: _, days: let days):
+          self.displayState = .daySelected(day: day, days: days)
+        case .notReady:
+          break
+        }
       }
     }
 

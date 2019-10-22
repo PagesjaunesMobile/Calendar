@@ -7,13 +7,18 @@
 
 import Foundation
 
-struct DefaultCalendarPeriodFormater: CalendarPeriodFormater {
-  var morningName: String = "Matin"
-  var afternoonName: String = "Après midi"
+public struct DefaultCalendarPeriodFormater: CalendarPeriodFormater {
+  public var morningName: String = "Matin"
+  public var afternoonName: String = "Après midi"
 
-  func isAfternoon(date: Date) -> Bool {
+  public func isAfternoon(date: Date) -> Bool {
     let dateComp = Calendar.current.component(Calendar.Component.hour, from: date)
     return dateComp >= 15
   }
+
+  public init() {
+
+  }
+
 }
 

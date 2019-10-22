@@ -44,9 +44,9 @@ class NoSlotCell: UICollectionViewCell {
   /// optional because of the recycle system of the `UICollectionView`
   private var viewModel: NoSlotCellViewModel?
 
-  private var style: CalendarStyle? {
+  private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupStyle()
+      self.setupTheme()
     }
   }
 
@@ -135,14 +135,14 @@ class NoSlotCell: UICollectionViewCell {
     self.contentView.addSubview(self.dispoStackView)
   }
 
-  /// Setup View style
-  private func setupStyle() {
-    guard let style = self.style else { return }
-    self.titleLabel.textColor = style.noSlotCell.noSlotCellTitleTextColor
-    self.titleLabel.font = style.noSlotCell.noSlotCellTitleFont
-    self.separatorView.backgroundColor = style.noSlotCell.noSlotCellSperatorColor
-    self.availableDayTitleLabel.textColor = style.noSlotCell.noSlotCellTitleTextColor
-    self.availableDayTitleLabel.font = style.noSlotCell.noSlotCellAlviableDayTextFont
+  /// Setup View theme
+  private func setupTheme() {
+    guard let theme = self.theme else { return }
+    self.titleLabel.textColor = theme.noSlotCell.noSlotCellTitleTextColor
+    self.titleLabel.font = theme.noSlotCell.noSlotCellTitleFont
+    self.separatorView.backgroundColor = theme.noSlotCell.noSlotCellSperatorColor
+    self.availableDayTitleLabel.textColor = theme.noSlotCell.noSlotCellTitleTextColor
+    self.availableDayTitleLabel.font = theme.noSlotCell.noSlotCellAlviableDayTextFont
   }
 
   /// Configure the `UIStackView` `dispoStackView`
@@ -166,7 +166,7 @@ class NoSlotCell: UICollectionViewCell {
   private func setup() {
     self.setupView()
     self.setupLayout()
-    self.setupStyle()
+    self.setupTheme()
     self.setupStackView()
     self.setupText()
   }
@@ -184,8 +184,8 @@ class NoSlotCell: UICollectionViewCell {
   ///
   /// - Parameter day: day to represent
   private func configureOnePreviousSlot(day: DayViewModel) {
-    guard let style = self.style else { return }
-    let dayView = AvailableView(mode: .previous(date: day), style: style)
+    guard let theme = self.theme else { return }
+    let dayView = AvailableView(mode: .previous(date: day), theme: theme)
     dayView.addTarget(self, action: #selector(userDidTapOnPreviousSlot(button:)), for: .touchUpInside)
     self.dispoStackView.addArrangedSubview(dayView)
   }
@@ -195,8 +195,8 @@ class NoSlotCell: UICollectionViewCell {
   ///
   /// - Parameter day: day to represent
   private func configureOneNextSlot(day: DayViewModel) {
-    guard let style = self.style else { return }
-    let dayView = AvailableView(mode: .next(date: day), style: style)
+    guard let theme = self.theme else { return }
+    let dayView = AvailableView(mode: .next(date: day), theme: theme)
     dayView.addTarget(self, action: #selector(userDidTapOnNextSlot), for: .touchUpInside)
     self.dispoStackView.addArrangedSubview(dayView)
   }
@@ -247,9 +247,9 @@ class NoSlotCell: UICollectionViewCell {
   /// designed to be called from the `cellForItem` `UICollectionViewDataSource` method
   ///
   /// - Parameter viewModel: cell viewModel
-  func configure(viewModel: NoSlotCellViewModel, style: CalendarStyle) {
+  func configure(viewModel: NoSlotCellViewModel, theme: CalendarViewControllerTheme) {
     self.viewModel = viewModel
-    self.style = style
+    self.theme = theme
 
     if let previous = viewModel.previousDay, viewModel.shouldPresentOnePreviousDay {
       self.configureOnePreviousSlot(day: previous)

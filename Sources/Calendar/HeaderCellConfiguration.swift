@@ -12,5 +12,5 @@ struct HeaderCellConfiguration {
   let dayListViewModel: DayListViewModel
   let delegate: HeaderCellDelegate
   let shouldUseEffectView: Bool
-  let style: CalendarStyle
+  let theme: CalendarViewControllerTheme
 }

@@ -24,14 +24,14 @@ import UIKit
 // MARK: - CalendarViewController
 
 /// Display time slot, month and day, and allow the user to select a time slot.
-class CalendarViewController: UIViewController {
+public class CalendarViewController: UIViewController {
 
   // MARK: Private properties
 
   // MARK: ViewModels
 
-  /// Style
-  private let style: CalendarStyle
+  /// Theme
+  private let theme: CalendarViewControllerTheme
 
   /// DayListView `ViewModel`
   private let dayListViewModel: DayListViewModel
@@ -47,6 +47,8 @@ class CalendarViewController: UIViewController {
   /// Define if the EffectView should be used in the CollectionView header
   private let shouldUseEffectView: Bool
 
+  private let shouldUseBigCell: Bool
+
   // MARK: DataController
 
   /// Represent the data State, dates, current selected day, current selected slot, and provide loading action methods.
@@ -55,7 +57,7 @@ class CalendarViewController: UIViewController {
 
   // MARK: Delegate
 
-  weak var delegate: CalendarViewControllerDelegate?
+  public weak var delegate: CalendarViewControllerDelegate?
 
   // MARK: Public methods
 
@@ -68,7 +70,7 @@ class CalendarViewController: UIViewController {
   ///   - periodFormater: `CalendarPeriodFormater` concrete implentation provide moring and afteroon name and logic to seperate them
   ///   - shouldUseEffectView: Bool define if `UIEffectView` blur should be used in the
   /// `UICollectionView` header (`UIEffectView` blur is an heavy process and should be perfom only on powerfull device)
-  init(configuration: Configuration) {
+  public init(configuration: Configuration) {
 
     self.dataController = CalendarDataController(dataProvider: configuration.dataProvider,
                                                  periodFormater: configuration.periodFormater,
@@ -78,7 +80,8 @@ class CalendarViewController: UIViewController {
     self.monthListViewModel = MonthListViewModel(dataController: dataController)
     self.slotListViewModel = TimeSlotListViewModel(dataController: dataController)
     self.shouldUseEffectView = configuration.shouldUseEffectView
-    self.style = configuration.style
+    self.theme = configuration.theme
+    self.shouldUseBigCell = configuration.cellSize.isBigCell
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -108,7 +111,13 @@ class CalendarViewController: UIViewController {
 
   /// This spinner is display during the inital data loading
   private let spinner: UIActivityIndicatorView = {
-    let dest = UIActivityIndicatorView(style: .gray)
+    let dest: UIActivityIndicatorView
+    if #available(iOS 13, *) {
+      dest = UIActivityIndicatorView(style: .medium)
+    }
+    else {
+      dest = UIActivityIndicatorView(style: .gray)
+    }
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
@@ -273,16 +282,16 @@ class CalendarViewController: UIViewController {
     self.delegate?.calendar(self, didTapOnOkButton: slot.originalDate, andCode: slot.code)
   }
 
-  /// Setup ok and cancel button (style, text and target)
+  /// Setup ok and cancel button (theme, text and target)
   /// a Tap gesture is added to the presentingOverlayView
   private func setupButtons() {
 
-    self.cancelButton.setTitleColor(self.style.okCancelButtons.enabledColor, for: .normal)
-    self.okButton.setTitleColor(self.style.okCancelButtons.enabledColor, for: .normal)
-    self.okButton.setTitleColor(self.style.okCancelButtons.disabledColor, for: .disabled)
+    self.cancelButton.setTitleColor(self.theme.okCancelButtons.enabledColor, for: .normal)
+    self.okButton.setTitleColor(self.theme.okCancelButtons.enabledColor, for: .normal)
+    self.okButton.setTitleColor(self.theme.okCancelButtons.disabledColor, for: .disabled)
 
-    self.okButton.titleLabel?.font = self.style.okCancelButtons.buttonFont
-    self.cancelButton.titleLabel?.font = self.style.okCancelButtons.buttonFont
+    self.okButton.titleLabel?.font = self.theme.okCancelButtons.buttonFont
+    self.cancelButton.titleLabel?.font = self.theme.okCancelButtons.buttonFont
 
     self.cancelButton.setTitle("Annuler", for: .normal)
     self.okButton.setTitle("OK", for: .normal)
@@ -305,7 +314,7 @@ class CalendarViewController: UIViewController {
   /// - Configure the collectionView
   /// - Setup the ViewModel delegate
   /// - Setup the dataController, start data loadind and subscribe to observables properties
-  /// - Setup the viewController style
+  /// - Setup the viewController theme
   /// - Setup buttons
   private func setup() {
     self.setupView()
@@ -317,143 +326,7 @@ class CalendarViewController: UIViewController {
     self.setupButtons()
   }
 
-  /// Dissmis the Calendar from the parentViewController,
-  /// It's required to call this method instead of the original dissmiss `UIViewController` method
-  ///
-  /// - Parameter completion: completionClosure, called after the dissmis action
-  func dissmissCalendar(completion: (() -> Void)? = nil) {
-
-    if self.presentingOverlayView.superview == nil {
-      if #available(iOS 13, *) {
-        self.dismiss(animated: true, completion: completion)
-        return
-      }
-
-      guard
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
-          self.dismiss(animated: true, completion: completion)
-          return
-      }
-
-      // isIpad like a boss
-      let isIPad = (rootViewController.traitCollection.horizontalSizeClass == .regular &&
-        rootViewController.traitCollection.verticalSizeClass == .regular)
-
-      guard isIPad == false else {
-        self.dismiss(animated: true, completion: completion)
-        return
-      }
-    }
-
-    UIView.animate(withDuration: 0.8,
-                   delay: 0.0,
-                   usingSpringWithDamping: 1.0,
-                   initialSpringVelocity: 0.0,
-                   options: .curveLinear, animations: {
-                    self.presentingOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.0)
-    }, completion: { _ in
-      self.presentingOverlayView.removeFromSuperview()
-    })
-
-    UIView.animate(withDuration: 0.8,
-                   delay: 0.0,
-                   usingSpringWithDamping: 1.0,
-                   initialSpringVelocity: 0.0,
-                   options: .curveEaseIn,
-                   animations: {
-                    self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height + CalendarMetrics.grid(9))
-    }, completion: { _ in
-      self.view.removeFromSuperview()
-      self.removeFromParent()
-      self.didMove(toParent: nil)
-      completion?()
-    })
-  }
-
-  /// Present the Calendar on the parentViewController with a nice animation
-  /// If the parentViewController `modalPresentationStyle` is formSheet the
-  /// standard presentation is used with a modalPresentationStyle formSheet.
-  ///
-  /// - Parameter viewController: viewController used to present
-  func presentOnViewController(viewController: UIViewController) {
-
-    guard
-      let rootViewController = UIApplication.shared.keyWindow?.rootViewController else {
-      viewController.present(self, animated: true, completion: nil)
-      self.delegate?.calendar(self, calendarDidAppearOnViewController: viewController)
-      return
-    }
-
-    // isIpad like a boss
-    let isIPad = (rootViewController.traitCollection.horizontalSizeClass == .regular &&
-      rootViewController.traitCollection.verticalSizeClass == .regular)
-
-    if isIPad == true {
-      self.modalPresentationStyle = .formSheet
-      viewController.present(self, animated: true, completion: nil)
-      self.delegate?.calendar(self, calendarDidAppearOnViewController: viewController)
-      return
-    }
-
-    if #available(iOS 13, *) {
-      viewController.present(self, animated: true, completion: nil)
-      self.delegate?.calendar(self, calendarDidAppearOnViewController: viewController)
-      return
-    }
-
-    let parentVC = rootViewController.presentedViewController ?? rootViewController
-
-    parentVC.view.addSubview(self.presentingOverlayView)
-    self.presentingOverlayView.isOpaque = false
-
-    self.delegate?.calendar(self, calendarDidAppearOnViewController: parentVC)
-
-    parentVC.view.addSubview(self.view)
-
-    self.view.translatesAutoresizingMaskIntoConstraints = false
-    parentVC.addChild(self)
-    self.didMove(toParent: parentVC)
-
-    var constraints = [NSLayoutConstraint]()
-
-    constraints.append(self.presentingOverlayView.topAnchor.constraint(equalTo: parentVC.view.topAnchor))
-    constraints.append(self.presentingOverlayView.bottomAnchor.constraint(equalTo: parentVC.view.bottomAnchor))
-    constraints.append(self.presentingOverlayView.leftAnchor.constraint(equalTo: parentVC.view.leftAnchor))
-    constraints.append(self.presentingOverlayView.rightAnchor.constraint(equalTo: parentVC.view.rightAnchor))
-
-    constraints.append(self.view.topAnchor.constraint(equalTo: parentVC.view.safeAreaLayoutGuide.topAnchor, constant: CalendarMetrics.grid(4)))
-    constraints.append(self.view.bottomAnchor.constraint(equalTo: parentVC.view.bottomAnchor))
-    constraints.append(self.view.leftAnchor.constraint(equalTo: parentVC.view.safeAreaLayoutGuide.leftAnchor))
-    constraints.append(self.view.rightAnchor.constraint(equalTo: parentVC.view.safeAreaLayoutGuide.rightAnchor))
-
-    NSLayoutConstraint.activate(constraints)
-
-    self.presentingOverlayView.backgroundColor = UIColor.clear
-
-    view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-    view.layer.cornerRadius = 10
-    view.layer.masksToBounds = true
-
-    self.view.transform = CGAffineTransform(translationX: 0, y: self.view.frame.height + CalendarMetrics.grid(4))
-
-    UIView.animate(withDuration: 0.5,
-                   delay: 0.0,
-                   usingSpringWithDamping: 0.75,
-                   initialSpringVelocity: 0.0,
-                   options: .curveEaseOut,
-                   animations: {
-                    self.view.transform = .identity
-    })
-
-    UIView.animate(withDuration: 0.2,
-                   delay: 0.3,
-                   options: .curveLinear, animations: {
-                    self.presentingOverlayView.backgroundColor = UIColor.black.withAlphaComponent(0.52)
-    })
-
-  }
-
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
     self.setup()
   }
@@ -462,21 +335,20 @@ class CalendarViewController: UIViewController {
 // MARK: - UICollectionViewDelegate
 
 extension CalendarViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     self.slotListViewModel.userDidSelectSlot(slotIndexPath: indexPath)
     self.delegate?.calendar(self, didSelectDateAtIndexPath: indexPath)
   }
 }
 
 // MARK: - UICollectionViewDataSource
-
 extension CalendarViewController: UICollectionViewDataSource {
 
-  func numberOfSections(in collectionView: UICollectionView) -> Int {
+  public func numberOfSections(in collectionView: UICollectionView) -> Int {
     return self.slotListViewModel.sectionCount
   }
 
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     if section == 0 {
       return 0
     } else {
@@ -484,7 +356,7 @@ extension CalendarViewController: UICollectionViewDataSource {
     }
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
     guard self.slotListViewModel.shouldDisplayNoSlotCell == false  else {
       let dequeueCell = collectionView.dequeueReusableCell(withReuseIdentifier: NoSlotCell.reusueCellIdentifier, for: indexPath)
@@ -492,7 +364,7 @@ extension CalendarViewController: UICollectionViewDataSource {
       castedCell.delegate = self
       guard let model = self.slotListViewModel.noSlotModel else { return dequeueCell }
 
-      castedCell.configure(viewModel: model, style: self.style)
+      castedCell.configure(viewModel: model, theme: self.theme)
       return castedCell
     }
 
@@ -507,12 +379,12 @@ extension CalendarViewController: UICollectionViewDataSource {
     }
 
     guard let model = self.slotListViewModel[indexPath.item] else { return dequeueCell }
-    dest.configure(model: model, style: self.style)
+    dest.configure(model: model, theme: self.theme)
 
     return dest
   }
 
-  func collectionView(_ collectionView: UICollectionView,
+  public func collectionView(_ collectionView: UICollectionView,
                       viewForSupplementaryElementOfKind kind: String,
                       at indexPath: IndexPath) -> UICollectionReusableView {
 
@@ -529,7 +401,7 @@ extension CalendarViewController: UICollectionViewDataSource {
                                                   dayListViewModel: self.dayListViewModel,
                                                   delegate: self,
                                                   shouldUseEffectView:self.shouldUseEffectView,
-                                                  style: self.style)
+                                                  theme: self.theme)
 
       castedHeaderView.configure(configuration: configuration)
       return castedHeaderView
@@ -571,12 +443,7 @@ extension CalendarViewController: CalendarViewLayoutDelegate {
   }
 
   var shouldUseBigCellSize: Bool {
-
-    guard let rootViewController = UIApplication.shared.keyWindow?.rootViewController else { return false }
-
-    // isIpad like a boss
-    return (rootViewController.traitCollection.horizontalSizeClass == .regular &&
-      rootViewController.traitCollection.verticalSizeClass == .regular)
+    return self.shouldUseBigCell
   }
 }
 

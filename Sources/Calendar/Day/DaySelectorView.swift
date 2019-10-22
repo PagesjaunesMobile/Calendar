@@ -41,7 +41,7 @@ class DaySelectorView: UIView {
   /// DaySelectorView viewModel, provide all information, and perform user action
   private let viewModel: DayListViewModel
 
-  private let style: CalendarStyle
+  private let theme: CalendarViewControllerTheme
 
   /// `DaySelectorView` delegate, notify all user interactions
   weak var delegate: DaySelectorViewDelegate?
@@ -140,15 +140,15 @@ class DaySelectorView: UIView {
 
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self  else { return }
-      self.selectItem(at: indexPath)
+      DispatchQueue.main.async { self.selectItem(at: indexPath) }
     }
 
     self.viewModel.delegate = self
   }
 
-  /// Setup View style
-  private func setupStyle() {
-    self.glassView.backgroundColor = self.style.daySelectorView.glassViewBackgroundColor
+  /// Setup View Theme
+  private func setupTheme() {
+    self.glassView.backgroundColor = self.theme.daySelectorView.glassViewBackgroundColor
     self.glassView.layer.cornerRadius = 7.0
   }
 
@@ -157,13 +157,13 @@ class DaySelectorView: UIView {
   /// - Subview layout
   /// - CollectionView configuration
   /// - Setup ViewModel (subscribe to Observable properties and set the delegate)
-  /// - Setup view style
+  /// - Setup view theme
   private func setup() {
     self.setupView()
     self.setupLayout()
     self.setupCollectionView()
     self.setupViewModel()
-    self.setupStyle()
+    self.setupTheme()
   }
 
   /// Update the selectedIndexPath with the indexPath of the element in the center of the collectionView
@@ -189,9 +189,9 @@ class DaySelectorView: UIView {
   /// `DaySelectorView` init
   ///
   /// - Parameter viewModel: `DaySelectorView` viewModel
-  init(viewModel: DayListViewModel, style: CalendarStyle) {
+  init(viewModel: DayListViewModel, theme: CalendarViewControllerTheme) {
     self.viewModel = viewModel
-    self.style = style
+    self.theme = theme
     super.init(frame: .zero)
     self.setup()
   }
@@ -211,7 +211,7 @@ extension DaySelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaySelectorCell.reuseIdentifier, for: indexPath)
     guard let viewModel = self.viewModel[indexPath], let castedCell = cell as? DaySelectorCell else { return cell }
-    castedCell.configure(model: viewModel, style: self.style)
+    castedCell.configure(model: viewModel, theme: self.theme)
     return castedCell
   }
 }

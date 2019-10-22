@@ -20,9 +20,9 @@ class MonthCell: UICollectionViewCell {
   /// Id which should be use to register the cell in the `UICollectionView`
   static let reuseCellIdentifier: String = String(describing: MonthCell.self)
 
-  private var style: CalendarStyle? {
+  private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupStyle()
+      self.setupTheme()
     }
   }
 
@@ -84,23 +84,23 @@ class MonthCell: UICollectionViewCell {
     self.containerView.addSubview(self.yearTitle)
   }
 
-  /// Setup the cell style
-  private func setupStyle() {
-    guard let style = style else { return }
-    self.monthTitle.textColor = style.monthCell.monthCellMonthTitleTextColor
-    self.yearTitle.textColor = style.monthCell.monthCellYearTitleTextColor
-    self.monthTitle.font = style.monthCell.monthCellMonthTitleTextFont
-    self.yearTitle.font = style.monthCell.monthCellYearTitleTextFont
+  /// Setup the cell theme
+  private func setupTheme() {
+    guard let theme = theme else { return }
+    self.monthTitle.textColor = theme.monthCell.monthCellMonthTitleTextColor
+    self.yearTitle.textColor = theme.monthCell.monthCellYearTitleTextColor
+    self.monthTitle.font = theme.monthCell.monthCellMonthTitleTextFont
+    self.yearTitle.font = theme.monthCell.monthCellYearTitleTextFont
   }
 
   /// Setup:
   /// - view hierarchy
   /// - view layouting
-  /// - view style
+  /// - view theme
   private func setup() {
     self.setupView()
     self.setupLayout()
-    self.setupStyle()
+    self.setupTheme()
   }
 
   // MARK: Public methods
@@ -109,8 +109,8 @@ class MonthCell: UICollectionViewCell {
   /// from the `UICollectionViewDataSource` method `cellForitemAt`
   ///
   /// - Parameter model: viewModel to setup
-  func configure(model: MonthViewModel, style: CalendarStyle) {
-    self.style = style
+  func configure(model: MonthViewModel, theme: CalendarViewControllerTheme) {
+    self.theme = theme
     self.monthTitle.text = model.monthText
     self.yearTitle.text = model.yearText
   }

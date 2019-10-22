@@ -87,9 +87,9 @@ class HeaderCell: UICollectionReusableView {
   /// Display a View where the user can select a Month
   private var monthView: MonthSelectorView?
 
-  private var style: CalendarStyle? {
+  private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupStyle()
+      self.setupTheme()
     }
   }
 
@@ -161,9 +161,9 @@ class HeaderCell: UICollectionReusableView {
   /// (view hierarchy, layout and configuration)
   ///
   /// - Parameter monthListViewModel: viewModel for `MonthSelectorView`
-  private func setupMonthView(monthListViewModel: MonthListViewModel, style: CalendarStyle) {
+  private func setupMonthView(monthListViewModel: MonthListViewModel, theme: CalendarViewControllerTheme) {
     guard self.monthView == nil else { return }
-    let monthView = MonthSelectorView(viewModel: monthListViewModel, style: style)
+    let monthView = MonthSelectorView(viewModel: monthListViewModel, theme: theme)
     monthView.translatesAutoresizingMaskIntoConstraints = false
     self.firstViewContainer.addSubview(monthView)
 
@@ -183,9 +183,9 @@ class HeaderCell: UICollectionReusableView {
   /// (view hierarchy, layout and configuration)
   ///
   /// - Parameter dayListViewModel: viewModel for `DaySelectorView`
-  private func setupDayView(dayListViewModel: DayListViewModel, style: CalendarStyle) {
+  private func setupDayView(dayListViewModel: DayListViewModel, theme: CalendarViewControllerTheme) {
     guard self.dayView == nil else { return }
-    let dayView = DaySelectorView(viewModel: dayListViewModel, style: style)
+    let dayView = DaySelectorView(viewModel: dayListViewModel, theme: theme)
     dayView.translatesAutoresizingMaskIntoConstraints = false
     self.secondViewContainer.addSubview(dayView)
 
@@ -215,14 +215,14 @@ class HeaderCell: UICollectionReusableView {
 
     self.setupView()
     self.setupLayout()
-    self.setupStyle()
+    self.setupTheme()
   }
 
-  /// Setup the View style
-  private func setupStyle() {
-    guard let style = self.style else { return }
-    self.secondSeparatorView.backgroundColor = style.header.headerViewSepararorColor
-    self.firstSeparatorView.backgroundColor = style.header.headerViewSepararorColor
+  /// Setup the View theme
+  private func setupTheme() {
+    guard let theme = self.theme else { return }
+    self.secondSeparatorView.backgroundColor = theme.header.headerViewSepararorColor
+    self.firstSeparatorView.backgroundColor = theme.header.headerViewSepararorColor
   }
 
   // MARK: Public methods
@@ -237,12 +237,12 @@ class HeaderCell: UICollectionReusableView {
   ///   - shouldUseEffectView: true the `UIVisualEffectView` will be used false
   /// a regular UIView will be used
   func configure(configuration: HeaderCellConfiguration) {
-    self.style = configuration.style
+    self.theme = configuration.theme
     self.shouldUseEffectView = configuration.shouldUseEffectView
     self.setupInitialView(shouldUseEffectView: shouldUseEffectView)
 
-    self.setupMonthView(monthListViewModel: configuration.monthListViewModel, style: configuration.style)
-    self.setupDayView(dayListViewModel: configuration.dayListViewModel, style: configuration.style)
+    self.setupMonthView(monthListViewModel: configuration.monthListViewModel, theme: configuration.theme)
+    self.setupDayView(dayListViewModel: configuration.dayListViewModel, theme: configuration.theme)
 
     self.monthView?.delegate = configuration.delegate
     self.dayView?.delegate = configuration.delegate

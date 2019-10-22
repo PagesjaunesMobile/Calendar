@@ -31,9 +31,9 @@ class CalendarSlotCell: UICollectionViewCell {
   /// Cell ViewModel
   private var model: TimeSlotViewModel?
 
-  private var style: CalendarStyle? = nil {
+  private var theme: CalendarViewControllerTheme?  = nil {
     didSet {
-      self.setupStyle()
+      self.setupTheme()
     }
   }
 
@@ -50,10 +50,10 @@ class CalendarSlotCell: UICollectionViewCell {
 
   // MARK: UICollectionViewCell override
 
-  /// The style change when the cell is selected
+  /// The theme change when the cell is selected
   override var isSelected: Bool {
     didSet {
-      self.isSelected == true ? self.enableSelectedStyle() : self.enableDeselectedStyle()
+      self.isSelected == true ? self.enableSelectedTheme() : self.enableDeselectedTheme()
     }
   }
 
@@ -79,43 +79,43 @@ class CalendarSlotCell: UICollectionViewCell {
     self.contentView.addSubview(self.titleLabel)
   }
 
-  /// Turn on the the selected style for the cell
-  private func enableSelectedStyle() {
-    guard let style = self.style else { return }
+  /// Turn on the the selected theme for the cell
+  private func enableSelectedTheme() {
+    guard let theme = self.theme else { return }
 
-    self.contentView.backgroundColor = style.slotCell.slotSelectedBackgroundColor
-    self.titleLabel.textColor = style.slotCell.slotSelectedTitleColor
+    self.contentView.backgroundColor = theme.slotCell.slotSelectedBackgroundColor
+    self.titleLabel.textColor = theme.slotCell.slotSelectedTitleColor
   }
 
-  /// Turn on the the deselected style for the cell
-  private func enableDeselectedStyle() {
-    guard let style = self.style else { return }
+  /// Turn on the the deselected theme for the cell
+  private func enableDeselectedTheme() {
+    guard let theme = self.theme else { return }
 
-    self.contentView.backgroundColor = style.slotCell.slotDeselectedBackgroundColor
-    self.titleLabel.textColor = style.slotCell.slotDeselectedTitleColor
+    self.contentView.backgroundColor = theme.slotCell.slotDeselectedBackgroundColor
+    self.titleLabel.textColor = theme.slotCell.slotDeselectedTitleColor
   }
 
-  /// Setup cell style
-  private func setupStyle() {
-    guard let style = self.style else { return }
+  /// Setup cell theme
+  private func setupTheme() {
+    guard let theme = self.theme else { return }
     self.contentView.layer.borderWidth = 1
     self.contentView.layer.cornerRadius = 4.0
     self.contentView.clipsToBounds = true
-    self.contentView.layer.borderColor = style.slotCell.slotBorderColor.cgColor
-    self.titleLabel.font = style.slotCell.slotTitleFont
-    self.titleLabel.textColor = style.slotCell.slotSelectedTitleColor
+    self.contentView.layer.borderColor = theme.slotCell.slotBorderColor.cgColor
+    self.titleLabel.font = theme.slotCell.slotTitleFont
+    self.titleLabel.textColor = theme.slotCell.slotSelectedTitleColor
   }
 
   /// Setup:
-  /// - view hierarchy
-  /// - subview layout
-  /// - view style
-  /// - activate deselected style
+  /// - View hierarchy
+  /// - Subview layout
+  /// - Theme
+  /// - Aactivate deselected theme
   private func setup() {
     self.setupView()
     self.setupLayout()
-    self.setupStyle()
-    self.enableDeselectedStyle()
+    self.setupTheme()
+    self.enableDeselectedTheme()
   }
 
   // MARK: Public methods
@@ -126,8 +126,8 @@ class CalendarSlotCell: UICollectionViewCell {
   /// designed to be called from `cellForItemAt` method of `UICollectionViewDataSource` method
   ///
   /// - Parameter model: cell viewModel
-  func configure(model: TimeSlotViewModel, style: CalendarStyle) {
-    self.style = style
+  func configure(model: TimeSlotViewModel, theme: CalendarViewControllerTheme) {
+    self.theme = theme
     self.model = model
     self.titleLabel.text = model.displayText
     self.isSelected = model.isSelected.value
@@ -136,7 +136,7 @@ class CalendarSlotCell: UICollectionViewCell {
 
       if isSelected == false {
         DispatchQueue.main.async {
-          self.enableDeselectedStyle()
+          self.enableDeselectedTheme()
         }
       }
     }

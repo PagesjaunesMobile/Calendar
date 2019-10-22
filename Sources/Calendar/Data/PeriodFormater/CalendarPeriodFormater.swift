@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol CalendarPeriodFormater {
+public protocol CalendarPeriodFormater {
   var morningName: String { get }
   var afternoonName: String { get }
   func isAfternoon(date: Date) -> Bool

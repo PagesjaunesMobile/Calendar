@@ -238,36 +238,42 @@ class MonthListViewModel {
 
     self.dataController.lazyLoadingState.bind { [weak self] _, _ in
       guard let `self` = self else { return }
-      switch self.displayState {
-      case .monthSelected(monthSelected: let monthSelected, months: let months):
-        self.updateButtonsObservable(monthSelectedIndex: monthSelected, months: months)
-      case .notReady:
-        break
+      DispatchQueue.main.async {
+        switch self.displayState {
+        case .monthSelected(monthSelected: let monthSelected, months: let months):
+          self.updateButtonsObservable(monthSelectedIndex: monthSelected, months: months)
+        case .notReady:
+          break
+        }
       }
     }
 
     self.dataController.days.bind { [weak self] _, days in
       guard let `self` = self else { return }
-      switch self.displayState {
-      case .notReady:
-        self.displayState = DisplayState(days: days, dataController: self.dataController)
-        self.delegate?.shouldReloadMonth()
-      case .monthSelected(monthSelected: let monthIndex, months: _):
-        let months = MonthViewModel.getMonthsViewModelFrom(daysModel: days, datacontroller: self.dataController)
-        self.displayState = .monthSelected(monthSelected: monthIndex, months: months)
-        self.delegate?.shouldReloadMonth()
+      DispatchQueue.main.async {
+        switch self.displayState {
+        case .notReady:
+          self.displayState = DisplayState(days: days, dataController: self.dataController)
+          self.delegate?.shouldReloadMonth()
+        case .monthSelected(monthSelected: let monthIndex, months: _):
+          let months = MonthViewModel.getMonthsViewModelFrom(daysModel: days, datacontroller: self.dataController)
+          self.displayState = .monthSelected(monthSelected: monthIndex, months: months)
+          self.delegate?.shouldReloadMonth()
+        }
       }
     }
 
     self.dataController.selectedDay.bind { [weak self] _, _ in
       guard let `self` = self else { return }
-      guard let day = self.dataController.selectedDayModel else { return }
-      guard let monthSelected = self.displayState.getMonthIndexForDay(day: day) else { return }
-      switch self.displayState {
-      case .monthSelected(monthSelected: _, months: let months):
-        self.displayState = .monthSelected(monthSelected: monthSelected, months: months)
-      case .notReady:
-        break
+      DispatchQueue.main.async {
+        guard let day = self.dataController.selectedDayModel else { return }
+        guard let monthSelected = self.displayState.getMonthIndexForDay(day: day) else { return }
+        switch self.displayState {
+        case .monthSelected(monthSelected: _, months: let months):
+          self.displayState = .monthSelected(monthSelected: monthSelected, months: months)
+        case .notReady:
+          break
+        }
       }
     }
   }

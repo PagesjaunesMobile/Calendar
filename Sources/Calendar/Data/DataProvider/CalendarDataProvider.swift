@@ -10,7 +10,7 @@ import Foundation
 /// MARK: - CalendarDataProvider
 
 /// Protocol to implement in order to provide Date and slot to `CalendarViewController`
-protocol CalendarDataProvider {
+public protocol CalendarDataProvider {
 
   /// This method will be used in the initial loading,
   /// it should provide an array of `DayDataProviderModel` with some `SlotDataProviderModel` inside
@@ -33,7 +33,7 @@ protocol CalendarDataProvider {
 /// - success: Some days have been loaded, the loading process is a success
 /// - noResult: There is no problem, but there is 0 result
 /// - error: Some error occured
-enum CalendarDataProviderResult {
+public enum CalendarDataProviderResult {
   case success(days: [DayDataProviderModel])
   case noResult
   case error
@@ -43,16 +43,28 @@ enum CalendarDataProviderResult {
 
 /// Slot `CalendarDataProvider` model,
 /// should provide a Date and a code.
-struct SlotDataProviderModel {
+public struct SlotDataProviderModel {
   let originalDate: Date
   let code: String
+
+  public init(originalDate: Date, code: String) {
+    self.originalDate = originalDate
+    self.code = code
+  }
+
 }
 
 /// MARK: - DayDataProviderModel
 
 /// Day `CalendarDataProvider` model,
 /// should provide a Date and an array of `SlotDataProviderModel`.
-struct DayDataProviderModel {
+public struct DayDataProviderModel {
   let originalDate: Date
   var slots: [SlotDataProviderModel]
+
+  public init(originalDate: Date, slots: [SlotDataProviderModel]) {
+    self.originalDate = originalDate
+    self.slots = slots
+  }
+
 }

@@ -32,7 +32,7 @@ class MonthSelectorView: UIView {
   /// MonthSelectorView viewModel, provide all information, and perform user action
   private let viewModel: MonthListViewModel
 
-  private let style: CalendarStyle
+  private let theme: CalendarViewControllerTheme
 
   /// If the value is true, the collectionView should be reload at the end of
   /// scrolling (scrollViewDidEndScrollingAnimation or scrollViewDidEndDecelerating)
@@ -86,20 +86,20 @@ class MonthSelectorView: UIView {
   private func setupLayout() {
     var constraints = [NSLayoutConstraint]()
 
-    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor))
+    constraints.append(self.leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: CalendarMetrics.grid(4)))
     constraints.append(self.leftButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
-    constraints.append(self.leftButton.heightAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
-    constraints.append(self.leftButton.widthAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
+//    constraints.append(self.leftButton.heightAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
+//    constraints.append(self.leftButton.widthAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
 
-    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor))
+    constraints.append(self.rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -CalendarMetrics.grid(4)))
     constraints.append(self.rightButton.centerYAnchor.constraint(equalTo: self.centerYAnchor))
 
-    constraints.append(self.rightButton.heightAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
-    constraints.append(self.rightButton.widthAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
+//    constraints.append(self.rightButton.heightAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
+//    constraints.append(self.rightButton.widthAnchor.constraint(lessThanOrEqualToConstant: CalendarMetrics.grid(11)))
 
-    constraints.append(self.rightButton.widthAnchor.constraint(equalTo: self.leftButton.widthAnchor, multiplier: 1.0))
-    constraints.append(self.rightButton.heightAnchor.constraint(equalTo: self.leftButton.heightAnchor, multiplier: 1.0))
+//    constraints.append(self.rightButton.widthAnchor.constraint(equalTo: self.leftButton.widthAnchor, multiplier: 1.0))
+//    constraints.append(self.rightButton.heightAnchor.constraint(equalTo: self.leftButton.heightAnchor, multiplier: 1.0))
 
     constraints.append(self.collectionView.topAnchor.constraint(equalTo: self.topAnchor))
     constraints.append(self.collectionView.leftAnchor.constraint(equalTo: self.leftButton.rightAnchor, constant: CalendarMetrics.grid(4)))
@@ -185,21 +185,23 @@ class MonthSelectorView: UIView {
   private func setupViewModel() {
     self.viewModel.leftButtonDisplayState.bind { [weak self] _, displayState in
       guard let `self` = self else { return }
-      self.update(button: self.leftButton, displayState: displayState)
+      DispatchQueue.main.async { self.update(button: self.leftButton, displayState: displayState) }
     }
 
     self.viewModel.rightButtonDisplayState.bind { [weak self] _, displayState in
       guard let `self` = self else { return }
-      self.update(button: self.rightButton, displayState: displayState)
+      DispatchQueue.main.async { self.update(button: self.rightButton, displayState: displayState) }
     }
 
     self.viewModel.selectedIndexPath.bind { [weak self] _, indexPath in
       guard let `self` = self else { return }
-      guard self.shouldReloadWhenScrollStop == false else {
-        return
+      DispatchQueue.main.async {
+        guard self.shouldReloadWhenScrollStop == false else {
+          return
+        }
+        self.isAnimated = true
+        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
       }
-      self.isAnimated = true
-      self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
 
     self.update(button: self.leftButton, displayState: self.viewModel.leftButtonDisplayState.value)
@@ -211,11 +213,11 @@ class MonthSelectorView: UIView {
   /// Setup button styles in normal and disable mode
   private func setupStyle() {
 
-    self.leftButton.setImage(self.style.monthSelectorView.monthSelectorViewLeftButtonEnabledImage, for: .normal)
-    self.leftButton.setImage(self.style.monthSelectorView.monthSelectorViewLeftButtonDisabledImage, for: .disabled)
+    self.leftButton.setImage(self.theme.monthSelectorView.monthSelectorViewLeftButtonEnabledImage, for: .normal)
+    self.leftButton.setImage(self.theme.monthSelectorView.monthSelectorViewLeftButtonDisabledImage, for: .disabled)
     
-    self.rightButton.setImage(self.style.monthSelectorView.monthSelectorViewRightButtoEnablednImage, for: .normal)
-    self.rightButton.setImage(self.style.monthSelectorView.monthSelectorViewRightButtonDisabledImage, for: .disabled)
+    self.rightButton.setImage(self.theme.monthSelectorView.monthSelectorViewRightButtoEnablednImage, for: .normal)
+    self.rightButton.setImage(self.theme.monthSelectorView.monthSelectorViewRightButtonDisabledImage, for: .disabled)
   }
 
   /// Setup:
@@ -237,9 +239,9 @@ class MonthSelectorView: UIView {
 
   // MARK: Init
 
-  init(viewModel: MonthListViewModel, style: CalendarStyle) {
+  init(viewModel: MonthListViewModel, theme: CalendarViewControllerTheme) {
     self.viewModel = viewModel
-    self.style = style
+    self.theme = theme
     super.init(frame: .zero)
     self.setup()
   }
@@ -293,7 +295,7 @@ extension MonthSelectorView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MonthCell.reuseCellIdentifier, for: indexPath)
     guard let castedCell = cell as? MonthCell, let monthModel = self.viewModel[indexPath] else { return cell }
-    castedCell.configure(model: monthModel, style: self.style)
+    castedCell.configure(model: monthModel, theme: self.theme)
     return castedCell
   }
 }
