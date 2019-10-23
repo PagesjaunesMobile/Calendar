@@ -22,7 +22,9 @@ class MonthCell: UICollectionViewCell {
 
   private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupTheme()
+      if oldValue == nil {
+        self.setupTheme()
+      }
     }
   }
 

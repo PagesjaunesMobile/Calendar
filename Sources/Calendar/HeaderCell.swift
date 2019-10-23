@@ -89,7 +89,9 @@ class HeaderCell: UICollectionReusableView {
 
   private var theme: CalendarViewControllerTheme? {
     didSet {
-      self.setupTheme()
+      if oldValue == nil {
+        self.setupTheme()
+      }
     }
   }
 

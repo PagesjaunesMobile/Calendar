@@ -33,7 +33,9 @@ class CalendarSlotCell: UICollectionViewCell {
 
   private var theme: CalendarViewControllerTheme?  = nil {
     didSet {
-      self.setupTheme()
+      if oldValue == nil {
+        self.setupTheme()
+      }
     }
   }
 
