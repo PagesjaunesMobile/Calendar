@@ -36,6 +36,8 @@ class CalendarDataController {
 
   // MARK: Public Observable properties
 
+  private let calendarQueue = DispatchQueue(label: "CalendarDispatchQueue", qos: DispatchQoS.userInteractive)
+
   /// Provide initial data loading state information
   private(set) var initialLoadingState = CalendarObservable<LoadingState>(.loading)
 
@@ -51,7 +53,7 @@ class CalendarDataController {
   /// Selected slot Index updated by `updateSelectedSlot` method
   private(set) var selectedSlot: CalendarObservable<Int?> = CalendarObservable<Int?>(nil)
 
-  let locale: Locale
+  private let dateFormater: CalendarDateFormater
 
   // MARK: Public Computed properties
 
@@ -165,7 +167,7 @@ class CalendarDataController {
       switch result {
       case .success(days: let model):
         self.initialLoadingState.value = .ready
-        self.days.value = model.map { DayDataControllerModel(day: $0, locale: self.locale) }
+        self.days.value = model.map { DayDataControllerModel(day: $0, formater: self.dateFormater) }
         self.selectedDay.value = 0
       case .error:
         self.initialLoadingState.value = .error
@@ -195,11 +197,15 @@ class CalendarDataController {
       guard let `self` = self else { return }
       switch result {
       case .success(days: let model):
-        self.lazyLoadingState.value = .ready
-        let newsDay = self.days.value + model.map { DayDataControllerModel(day: $0, locale: self.locale) }
-        let uniqueDay = Array(Set(newsDay))
-        let sorted = uniqueDay.sorted()
-        self.days.value = sorted
+        self.calendarQueue.async {
+          let newsDay = self.days.value + model.map { DayDataControllerModel(day: $0, formater: self.dateFormater) }
+          let uniqueDay = Array(Set(newsDay))
+          let sorted = uniqueDay.sorted()
+          DispatchQueue.main.async {
+            self.days.value = sorted
+            self.lazyLoadingState.value = .ready
+          }
+        }
       case .error:
         self.lazyLoadingState.value = .error
       case .noResult:
@@ -220,7 +226,7 @@ class CalendarDataController {
   init(dataProvider: CalendarDataProvider, periodFormater: CalendarPeriodFormater, locale: Locale) {
     self.dataProvider = dataProvider
     self.periodFormater = periodFormater
-    self.locale = locale
+    self.dateFormater = CalendarDateFormater(locale: locale)
   }
 
 }

@@ -64,12 +64,7 @@ class TimeSlotViewModel {
   ///   - dataController: Shared `CalendarDataController` accros all `CalendarViewController` viewModels
   init(model: SlotDataControllerModel, dataController: CalendarDataController) {
     self.originalModel = model
-    
-    let dateFormater = DateFormatter()
-    dateFormater.locale = dataController.locale
-    dateFormater.dateFormat = "HH'h'mm"
-
-    self.displayText = dateFormater.string(from: self.originalModel.originalDate)
+    self.displayText = model.displayText
     self.dataController = dataController
   }
 }

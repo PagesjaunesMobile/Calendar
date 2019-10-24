@@ -34,27 +34,16 @@ struct DayDataControllerModel: Equatable, Hashable {
   /// Init of DayDataControllerModel from a `DayDataProviderModel`
   ///
   /// - Parameter day: day returned by a `CalendarDataProvider` concrete instance
-  init(day: DayDataProviderModel, locale: Locale) {
+  init(day: DayDataProviderModel, formater: CalendarDataController.CalendarDateFormater) {
 
     self.realDate = day.originalDate
 
-    let dateFormater = DateFormatter()
+    self.monthText = formater.extractMonth(date: day.originalDate)
+    self.yearText = formater.extractYear(date: day.originalDate)
+    self.dayNumberText = formater.extractDay(date: day.originalDate)
+    self.shortDayText = formater.exctractDayOfWeek(date: day.originalDate)
 
-    dateFormater.locale = locale
-
-    dateFormater.dateFormat = "MMMM"
-    self.monthText = dateFormater.string(from: realDate)
-
-    dateFormater.dateFormat = "yyyy"
-    self.yearText = dateFormater.string(from: realDate)
-
-    dateFormater.dateFormat = "d"
-    self.dayNumberText = dateFormater.string(from: realDate)
-
-    dateFormater.dateFormat = "E"
-    self.shortDayText = dateFormater.string(from: realDate)
-
-    self.slots = day.slots.map(SlotDataControllerModel.init)
+    self.slots = day.slots.map { SlotDataControllerModel(model: $0, formater: formater) }
   }
 }
 

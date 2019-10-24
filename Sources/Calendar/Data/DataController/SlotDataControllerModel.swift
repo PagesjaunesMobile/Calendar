@@ -10,7 +10,7 @@ import Foundation
 /// MARK: - SlotDataControllerModel
 
 /// Represent a Slot in the `CalendarDataController`
-public struct SlotDataControllerModel {
+struct SlotDataControllerModel {
 
   /// Stored code will passed trought the `CalendarViewControllerDelegate` if the user select this slot.
   let code: String
@@ -18,12 +18,15 @@ public struct SlotDataControllerModel {
   /// Date of this slot, will be passed trought the `CalendarViewControllerDelegate` if the user select this slot.
   let originalDate: Date
 
+  let displayText: String
+
   /// Init of SlotDataControllerModel from a `SlotDataProviderModel`
   ///
   /// - Parameter model: slot returned by a `CalendarDataProvider` concrete instance
-  public init(model: SlotDataProviderModel) {
+  public init(model: SlotDataProviderModel, formater: CalendarDataController.CalendarDateFormater) {
     self.code = model.code
     self.originalDate = model.originalDate
+    self.displayText = formater.extractHoursAndMinutes(date: model.originalDate)
   }
 }
 
