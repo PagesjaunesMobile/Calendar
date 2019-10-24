@@ -96,16 +96,16 @@ class DayViewModel {
     self.slotsViewModel = self.originalModel.slots.map { TimeSlotViewModel(model: $0, dataController: dataController) }
     self.dataController = dataController
 
-    // if one slot is selected, all other slots are unselected
-    self.slotsViewModel.forEach { slot in
-      slot.isSelected.bind(observer: { [weak self] _, isSelected in
-        guard let `self` = self, isSelected == true else { return }
-        DispatchQueue.main.async {
+    DispatchQueue.global(qos: DispatchQoS.QoSClass.userInteractive).async {
+      // if one slot is selected, all other slots are unselected
+      self.slotsViewModel.forEach { slot in
+        slot.isSelected.bind(observer: { [weak self] _, isSelected in
+          guard let `self` = self, isSelected == true else { return }
           self.slotsViewModel.filter { elem in
             elem != slot
-            }.forEach { $0.unSelect() }
-        }
-      })
+          }.forEach { $0.unSelect() }
+        })
+      }
     }
   }
 }

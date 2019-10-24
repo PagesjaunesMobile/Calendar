@@ -145,7 +145,6 @@ class DayListViewModel {
           self.delegate?.shouldReloadDays()
         }
       }
-
     }
     
     self.dataController.selectedDay.bind { [weak self] _, day in

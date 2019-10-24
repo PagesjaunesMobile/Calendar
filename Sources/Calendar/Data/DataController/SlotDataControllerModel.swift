@@ -20,13 +20,18 @@ struct SlotDataControllerModel {
 
   let displayText: String
 
+  let isAfternoon: Bool
+
   /// Init of SlotDataControllerModel from a `SlotDataProviderModel`
   ///
   /// - Parameter model: slot returned by a `CalendarDataProvider` concrete instance
-  public init(model: SlotDataProviderModel, formater: CalendarDataController.CalendarDateFormater) {
+  public init(model: SlotDataProviderModel,
+              dateformater: CalendarDataController.CalendarDateFormater,
+              periodFormater: CalendarPeriodFormater) {
     self.code = model.code
     self.originalDate = model.originalDate
-    self.displayText = formater.extractHoursAndMinutes(date: model.originalDate)
+    self.displayText = dateformater.extractHoursAndMinutes(date: model.originalDate)
+    self.isAfternoon = periodFormater.isAfternoon(date: model.originalDate)
   }
 }
 

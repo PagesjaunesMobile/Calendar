@@ -83,15 +83,6 @@ class CalendarDataController {
     return self.periodFormater.afternoonName
   }
 
-  /// Determine if the slot passed in parameter is in the afternoon period
-  /// according to the periodFormater
-  ///
-  /// - Parameter slot: slot to test
-  /// - Returns: true if the slot is in the afternoon period false if it belong to the morning period.
-  func isAfternoon(slot: SlotDataControllerModel) -> Bool {
-    return self.periodFormater.isAfternoon(date: slot.originalDate)
-  }
-
   // MARK: Private properties
 
   /// Period formater used to determine the name of the mornig / afternoon period and how it's determined
@@ -167,7 +158,7 @@ class CalendarDataController {
       switch result {
       case .success(days: let model):
         self.initialLoadingState.value = .ready
-        self.days.value = model.map { DayDataControllerModel(day: $0, formater: self.dateFormater) }
+        self.days.value = model.map { DayDataControllerModel(day: $0, dateFormater: self.dateFormater, periodFormater: self.periodFormater) }
         self.selectedDay.value = 0
       case .error:
         self.initialLoadingState.value = .error
@@ -198,7 +189,9 @@ class CalendarDataController {
       switch result {
       case .success(days: let model):
         self.calendarQueue.async {
-          let newsDay = self.days.value + model.map { DayDataControllerModel(day: $0, formater: self.dateFormater) }
+          let newsDay = self.days.value + model.map { DayDataControllerModel(day: $0,
+                                                                             dateFormater: self.dateFormater,
+                                                                             periodFormater: self.periodFormater) }
           let uniqueDay = Array(Set(newsDay))
           let sorted = uniqueDay.sorted()
           DispatchQueue.main.async {

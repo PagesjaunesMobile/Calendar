@@ -31,7 +31,7 @@ class TimeSlotViewModel {
   /// Indicate if the current slot is in the moring or afternoon period
   /// the evaluation is done in the `CalendarDataController`
   var isAfternoon: Bool {
-    return self.dataController.isAfternoon(slot: self.originalModel)
+    return self.originalModel.isAfternoon
   }
 
   // MARK: Read only public properties
