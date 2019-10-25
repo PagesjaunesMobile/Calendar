@@ -85,16 +85,16 @@ class CalendarSlotCell: UICollectionViewCell {
   private func enableSelectedTheme() {
     guard let theme = self.theme else { return }
 
-    self.contentView.backgroundColor = theme.slotCell.slotSelectedBackgroundColor
-    self.titleLabel.textColor = theme.slotCell.slotSelectedTitleColor
+    self.contentView.backgroundColor = theme.slotCell.selectedBackgroundColor
+    self.titleLabel.textColor = theme.slotCell.selectedTitleColor
   }
 
   /// Turn on the the deselected theme for the cell
   private func enableDeselectedTheme() {
     guard let theme = self.theme else { return }
 
-    self.contentView.backgroundColor = theme.slotCell.slotDeselectedBackgroundColor
-    self.titleLabel.textColor = theme.slotCell.slotDeselectedTitleColor
+    self.contentView.backgroundColor = theme.slotCell.deselectedBackgroundColor
+    self.titleLabel.textColor = theme.slotCell.deselectedTitleColor
   }
 
   /// Setup cell theme
@@ -103,9 +103,9 @@ class CalendarSlotCell: UICollectionViewCell {
     self.contentView.layer.borderWidth = 1
     self.contentView.layer.cornerRadius = 4.0
     self.contentView.clipsToBounds = true
-    self.contentView.layer.borderColor = theme.slotCell.slotBorderColor.cgColor
-    self.titleLabel.font = theme.slotCell.slotTitleFont
-    self.titleLabel.textColor = theme.slotCell.slotSelectedTitleColor
+    self.contentView.layer.borderColor = theme.slotCell.borderColor.cgColor
+    self.titleLabel.font = theme.slotCell.titleFont
+    self.titleLabel.textColor = theme.slotCell.selectedTitleColor
   }
 
   /// Setup:

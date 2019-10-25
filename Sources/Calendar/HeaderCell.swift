@@ -223,8 +223,8 @@ class HeaderCell: UICollectionReusableView {
   /// Setup the View theme
   private func setupTheme() {
     guard let theme = self.theme else { return }
-    self.secondSeparatorView.backgroundColor = theme.header.headerViewSepararorColor
-    self.firstSeparatorView.backgroundColor = theme.header.headerViewSepararorColor
+    self.secondSeparatorView.backgroundColor = theme.header.separarorColor
+    self.firstSeparatorView.backgroundColor = theme.header.separarorColor
   }
 
   // MARK: Public methods

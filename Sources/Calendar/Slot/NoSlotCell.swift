@@ -140,11 +140,11 @@ class NoSlotCell: UICollectionViewCell {
   /// Setup View theme
   private func setupTheme() {
     guard let theme = self.theme else { return }
-    self.titleLabel.textColor = theme.noSlotCell.noSlotCellTitleTextColor
-    self.titleLabel.font = theme.noSlotCell.noSlotCellTitleFont
-    self.separatorView.backgroundColor = theme.noSlotCell.noSlotCellSperatorColor
-    self.availableDayTitleLabel.textColor = theme.noSlotCell.noSlotCellTitleTextColor
-    self.availableDayTitleLabel.font = theme.noSlotCell.noSlotCellAlviableDayTextFont
+    self.titleLabel.textColor = theme.noSlotCell.titleTextColor
+    self.titleLabel.font = theme.noSlotCell.titleFont
+    self.separatorView.backgroundColor = theme.noSlotCell.speratorColor
+    self.availableDayTitleLabel.textColor = theme.noSlotCell.titleTextColor
+    self.availableDayTitleLabel.font = theme.noSlotCell.alviableDayTextFont
   }
 
   /// Configure the `UIStackView` `dispoStackView`

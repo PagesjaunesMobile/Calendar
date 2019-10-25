@@ -30,9 +30,9 @@ extension AvailableView {
     func imageWith(theme: CalendarViewControllerTheme) -> UIImage {
       switch self {
       case .next:
-        return theme.alviableView.alviableRightButtonImage
+        return theme.alviableView.rightButtonImage
       case .previous:
-        return theme.alviableView.alviableLeftButtonImage
+        return theme.alviableView.leftButtonImage
       }
     }
 
@@ -86,9 +86,9 @@ class AvailableView: UIButton {
   override var isHighlighted: Bool {
     didSet {
       if self.isHighlighted == true {
-        self.backgroundColor = self.theme.alviableView.alviableHighlightBackgroundColor
+        self.backgroundColor = self.theme.alviableView.highlightBackgroundColor
       } else {
-        self.backgroundColor = self.theme.alviableView.alviableNormalBackgroundColor
+        self.backgroundColor = self.theme.alviableView.normalBackgroundColor
       }
     }
   }
@@ -203,17 +203,17 @@ class AvailableView: UIButton {
 
   /// Setup the view theme
   private func setupStyle() {
-    self.dayOfWeekLabel.font = theme.alviableView.alviableDayOfWeekFont
-    self.dayOfWeekLabel.textColor = theme.alviableView.alviableDayOfWeekColor
+    self.dayOfWeekLabel.font = theme.alviableView.dayOfWeekFont
+    self.dayOfWeekLabel.textColor = theme.alviableView.dayOfWeekColor
 
-    self.numberOfMonthLabel.font = theme.alviableView.alviableDayNumberOfMonthFont
-    self.numberOfMonthLabel.textColor = theme.alviableView.alviableDayNumberOfMonthColor
+    self.numberOfMonthLabel.font = theme.alviableView.dayNumberOfMonthFont
+    self.numberOfMonthLabel.textColor = theme.alviableView.dayNumberOfMonthColor
 
     self.slotHourLabel.font = theme.alviableView.alviableSlotHourLabelFont
     self.slotHourLabel.textColor = theme.alviableView.alviableSlotHourLabelTextColor
 
     self.layer.borderWidth = 1
-    self.layer.borderColor = theme.alviableView.alviableSlotBorderColor.cgColor
+    self.layer.borderColor = theme.alviableView.borderColor.cgColor
     self.layer.cornerRadius = 3
   }
 

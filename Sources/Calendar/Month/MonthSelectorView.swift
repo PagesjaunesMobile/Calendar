@@ -213,11 +213,11 @@ class MonthSelectorView: UIView {
   /// Setup button styles in normal and disable mode
   private func setupStyle() {
 
-    self.leftButton.setImage(self.theme.monthSelectorView.monthSelectorViewLeftButtonEnabledImage, for: .normal)
-    self.leftButton.setImage(self.theme.monthSelectorView.monthSelectorViewLeftButtonDisabledImage, for: .disabled)
+    self.leftButton.setImage(self.theme.monthSelectorView.leftButtonEnabledImage, for: .normal)
+    self.leftButton.setImage(self.theme.monthSelectorView.leftButtonDisabledImage, for: .disabled)
     
-    self.rightButton.setImage(self.theme.monthSelectorView.monthSelectorViewRightButtoEnablednImage, for: .normal)
-    self.rightButton.setImage(self.theme.monthSelectorView.monthSelectorViewRightButtonDisabledImage, for: .disabled)
+    self.rightButton.setImage(self.theme.monthSelectorView.rightButtoEnablednImage, for: .normal)
+    self.rightButton.setImage(self.theme.monthSelectorView.rightButtonDisabledImage, for: .disabled)
   }
 
   /// Setup:

@@ -89,10 +89,10 @@ class MonthCell: UICollectionViewCell {
   /// Setup the cell theme
   private func setupTheme() {
     guard let theme = theme else { return }
-    self.monthTitle.textColor = theme.monthCell.monthCellMonthTitleTextColor
-    self.yearTitle.textColor = theme.monthCell.monthCellYearTitleTextColor
-    self.monthTitle.font = theme.monthCell.monthCellMonthTitleTextFont
-    self.yearTitle.font = theme.monthCell.monthCellYearTitleTextFont
+    self.monthTitle.textColor = theme.monthCell.monthTitleTextColor
+    self.yearTitle.textColor = theme.monthCell.yearTitleTextColor
+    self.monthTitle.font = theme.monthCell.monthTitleTextFont
+    self.yearTitle.font = theme.monthCell.yearTitleTextFont
   }
 
   /// Setup:

@@ -8,42 +8,93 @@
 import Foundation
 import UIKit
 
-public struct CalendarViewControllerTheme {
-  public var daySelectorCell: DaySelectorCellStyle
-  public var daySelectorView: DaySelectorViewStyle
-  public var okCancelButtons: OkCancelStyle
-  public var slotCell: SlotCellStyle
-  public var noSlotCell: NoSlotCellStyle
-  public var alviableView: AlviableViewStyle
-  public var monthSelectorView: MonthSelectorViewStyle
-  public var monthCell: MonthCellStyle
-  public var header: HeaderViewStyle
+// MARK: - CalendarViewControllerTheme
 
+/// Theme for `CalendarViewController`, describe UI Properties (Color / Font) for all graphical component
+public struct CalendarViewControllerTheme {
+
+  // MARK: Public properties
+
+  // MARK: Themes
+
+  /// Describe the theme for the `DaySelectorCell`, the view wich display one day data
+  public var daySelectorCell: DaySelectorCellTheme
+
+  /// Describe the theme for the `DaySelectorView`, the view wich display Days
+  public var daySelectorView: DaySelectorViewTheme
+
+  /// Theme for the ok and the cancel button on top of the `UIViewController`
+  public var okCancelButtons: OkCancelTheme
+
+  /// Theme for `SlotCell`, the slot cell wich are display in the main `UICollectionView` on the `CalendarViewController`
+  public var slotCell: SlotCellTheme
+
+  /// Theme for the `NoSlotCell`, this cell is is display when there is no slot for the selected day
+  public var noSlotCell: NoSlotCellTheme
+
+  /// Theme for the `AlviableView`, this view is display inside the `NoSlotCell`
+  /// view to inform the user about the next or the previous alviable slot
+  public var alviableView: AlviableViewTheme
+
+  /// Theme for the `MonthSelectorView`, this view is responsible
+  /// of display and select th current month
+  public var monthSelectorView: MonthSelectorViewTheme
+
+  /// Theme for the Month cell, represent one month in the `MonthSelectorView`
+  public var monthCell: MonthCellTheme
+
+  /// Theme for the `HeaderView` container for the `MonthSelectorView` and the `DaySelectorView`
+  public var header: HeaderViewTheme
+
+  // MARK: Static Properties
+
+  // MARK: Default theme
+
+  /// Default theme
   public static let `default`: Self = {
 
-    let dest = CalendarViewControllerTheme(daySelectorCell: DaySelectorCellStyle.default,
-                                           daySelectorView: DaySelectorViewStyle.default,
-                                           okCancelButtons: OkCancelStyle.default,
-                                           slotCell: SlotCellStyle.default,
-                                           noSlotCell: NoSlotCellStyle.default,
-                                           alviableView: AlviableViewStyle.default,
-                                           monthSelectorView: MonthSelectorViewStyle.default,
-                                           monthCell: MonthCellStyle.default,
-                                           header: HeaderViewStyle.default)
+    let dest = CalendarViewControllerTheme(daySelectorCell: DaySelectorCellTheme.default,
+                                           daySelectorView: DaySelectorViewTheme.default,
+                                           okCancelButtons: OkCancelTheme.default,
+                                           slotCell: SlotCellTheme.default,
+                                           noSlotCell: NoSlotCellTheme.default,
+                                           alviableView: AlviableViewTheme.default,
+                                           monthSelectorView: MonthSelectorViewTheme.default,
+                                           monthCell: MonthCellTheme.default,
+                                           header: HeaderViewTheme.default)
     return dest
   }()
 }
 
 extension CalendarViewControllerTheme {
 
-  public struct DaySelectorCellStyle {
-    public var dayNumberLabelFont: UIFont //UIFont.diloRoman(size: 32)
-    public var dayNumberLabelColor: UIColor // UIColor.black
-    public var dayTextLabelFont: UIFont  // UIFont.diloRoman(size: 17)
-    public var dayTextLabelColor: UIColor // UIColor.black
+  // MARK: - DaySelectorCellTheme
 
+  // MARK: Public properties
+
+  // MARK: Themes
+
+  /// Describe the theme for the `DaySelectorCell`, the view wich display one day data
+  public struct DaySelectorCellTheme {
+    /// Font for the `DayNumberLabel` represent the day of the month
+    public var dayNumberLabelFont: UIFont
+
+    /// Color for the `DayNumberLabel` represent the day of the month
+    public var dayNumberLabelColor: UIColor
+
+    /// Font for the `dayTextLabel` represent the day of the week text (exemple Jeu.)
+    public var dayTextLabelFont: UIFont
+
+    /// Color for the `dayTextLabel` represent the day of the week text (exemple Jeu.)
+    public var dayTextLabelColor: UIColor
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      var dest = DaySelectorCellStyle(dayNumberLabelFont: UIFont.systemFont(ofSize: 32),
+      var dest = DaySelectorCellTheme(dayNumberLabelFont: UIFont.systemFont(ofSize: 32),
                                       dayNumberLabelColor: UIColor.black,
                                       dayTextLabelFont: UIFont.systemFont(ofSize: 17),
                                       dayTextLabelColor: UIColor.black)
@@ -57,23 +108,56 @@ extension CalendarViewControllerTheme {
 
   }
 
-  public struct DaySelectorViewStyle {
-    public var glassViewBackgroundColor: UIColor // UIColor.grey2()
+  // MARK: - DaySelectorViewTheme
 
+  /// Describe the theme for the `DaySelectorView`, the view wich display Days
+  public struct DaySelectorViewTheme {
+
+    // MARK: Public properties
+
+    // MARK: Themes
+
+
+    /// Color of the glassView, the view on the center of the `DaySelectorView` wich indicate the selection.
+    public var glassViewBackgroundColor: UIColor
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = DaySelectorViewStyle(glassViewBackgroundColor: UIColor.lightGray)
+      let dest = DaySelectorViewTheme(glassViewBackgroundColor: UIColor.lightGray)
       return dest
     }()
 
   }
 
-  public struct OkCancelStyle {
-    public var enabledColor: UIColor // UIColor.bluePJ()
-    public var disabledColor: UIColor // UIColor.lightGray
-    public var buttonFont: UIFont // UIFont.boldSystemFont(ofSize: 17)
+  // MARK: - OkCancelTheme
 
+  /// Theme for the ok and the cancel button on top of the `UIViewController`
+  public struct OkCancelTheme {
+
+    // MARK: Public properties
+
+    // MARK: Themes
+
+    /// Color when the button is enable
+    public var enabledColor: UIColor
+
+    /// Color when the button is disabled
+    public var disabledColor: UIColor
+
+    /// Ok / Cancel button font
+    public var buttonFont: UIFont
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = OkCancelStyle(enabledColor: UIColor.blue,
+      let dest = OkCancelTheme(enabledColor: UIColor.blue,
                                disabledColor: UIColor.lightGray,
                                buttonFont: UIFont.boldSystemFont(ofSize: 17))
       return dest
@@ -81,24 +165,46 @@ extension CalendarViewControllerTheme {
 
   }
 
-  public struct SlotCellStyle {
-    public var slotSelectedBackgroundColor: UIColor // UIColor.bluePJ()
-    public var slotSelectedTitleColor: UIColor //UIColor.white
+  // MARK: - SlotCellTheme
 
-    public var slotDeselectedBackgroundColor: UIColor // UIColor.white
-    public var slotDeselectedTitleColor: UIColor  //UIColor.bluePJ()
+  /// Theme for `SlotCell`, the slot cell wich are display in the main `UICollectionView` on the `CalendarViewController`
+  public struct SlotCellTheme {
 
-    public var slotTitleFont: UIFont  //UIFont.diloRoman(size: 16)
-    public var slotBorderColor: UIColor //UIColor.bluePJ()
+    // MARK: Public properties
 
+    // MARK: Themes
+
+    /// Color of the slot cell background when the slot is selected
+    public var selectedBackgroundColor: UIColor
+
+    /// Color of the slot cell title color when the slot is selected
+    public var selectedTitleColor: UIColor
+
+    /// Color of the slot cell background when the slot is deselected
+    public var deselectedBackgroundColor: UIColor
+
+    /// Color of the slot cell title color when the slot is selected
+    public var deselectedTitleColor: UIColor
+
+    /// Slot title font
+    public var titleFont: UIFont
+
+    /// `SlotCell` border color
+    public var borderColor: UIColor
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
 
-      let dest = SlotCellStyle(slotSelectedBackgroundColor: UIColor.blue,
-                               slotSelectedTitleColor: UIColor.white,
-                               slotDeselectedBackgroundColor: UIColor.white,
-                               slotDeselectedTitleColor: UIColor.blue,
-                               slotTitleFont: UIFont.systemFont(ofSize: 16),
-                               slotBorderColor: UIColor.blue)
+      let dest = SlotCellTheme(selectedBackgroundColor: UIColor.blue,
+                               selectedTitleColor: UIColor.white,
+                               deselectedBackgroundColor: UIColor.white,
+                               deselectedTitleColor: UIColor.blue,
+                               titleFont: UIFont.systemFont(ofSize: 16),
+                               borderColor: UIColor.blue)
       return dest
       
     }()
@@ -106,97 +212,203 @@ extension CalendarViewControllerTheme {
 
   }
 
-  public struct NoSlotCellStyle {
-    public var noSlotCellTitleTextColor: UIColor //UIColor.grey5()
-    public var noSlotCellTitleFont: UIFont //UIFont.diloLight(size: 24)
-    public var noSlotCellSperatorColor: UIColor //UIColor.grey3()
-    public var noSlotCellAlviableDayTextColor: UIColor //UIColor.grey6()
-    public var noSlotCellAlviableDayTextFont: UIFont  //UIFont.diloBold(size: 17)
+  // MARK: - NoSlotCellTheme
 
+  /// Theme for the `NoSlotCell`, this cell is is display when there is no slot for the selected day
+  public struct NoSlotCellTheme {
+
+    // MARK: Public properties
+
+    // MARK: Themes
+
+    /// Title color of the `NoSlotCell` the title on the top of the view
+    public var titleTextColor: UIColor
+
+    /// Font of the `NoSlotCell` the title on the top of the view
+    public var titleFont: UIFont
+
+    /// Separator view color between the title and the alviable view label
+    public var speratorColor: UIColor
+
+    /// Alviable view title text color, this title explain to the user, the remaining slot options
+    public var alviableDayTextColor: UIColor
+
+    /// Alviable view font, this title explain to the user, the remaining slot options
+    public var alviableDayTextFont: UIFont
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = NoSlotCellStyle(noSlotCellTitleTextColor: UIColor.gray,
-                                 noSlotCellTitleFont: UIFont.systemFont(ofSize: 24),
-                                 noSlotCellSperatorColor: UIColor.gray,
-                                 noSlotCellAlviableDayTextColor: UIColor.gray,
-                                 noSlotCellAlviableDayTextFont: UIFont.systemFont(ofSize: 17))
+      let dest = NoSlotCellTheme(titleTextColor: UIColor.gray,
+                                 titleFont: UIFont.systemFont(ofSize: 24),
+                                 speratorColor: UIColor.gray,
+                                 alviableDayTextColor: UIColor.gray,
+                                 alviableDayTextFont: UIFont.systemFont(ofSize: 17))
       return dest
     }()
   }
 
-  public struct AlviableViewStyle {
-    public var alviableLeftButtonImage: UIImage  //UIImage.resize(#imageLiteral(resourceName: "chevronGauche"), size: KitUIAssetSize._16pt, color: UIColor.bluePJ())
-    public var alviableRightButtonImage: UIImage  // UIImage.resize(#imageLiteral(resourceName: "chevronDroit"), size: KitUIAssetSize._16pt, color: UIColor.bluePJ())
-    public var alviableNormalBackgroundColor: UIColor //UIColor.bluePJ().withAlphaComponent(0.2)
-    public var alviableHighlightBackgroundColor: UIColor // UIColor.white
+  // MARK: - AlviableViewTheme
 
-    public var alviableDayOfWeekFont: UIFont  //UIFont.diloRoman(size: 17)
-    public var alviableDayOfWeekColor: UIColor // UIColor.bluePJ()
+  /// Theme for the `AlviableView`, this view is display inside the `NoSlotCell`
+  /// view to inform the user about the next or the previous alviable slot
+  public struct AlviableViewTheme {
 
-    public var alviableDayNumberOfMonthFont: UIFont  //UIFont.diloRoman(size: 32)
-    public var alviableDayNumberOfMonthColor: UIColor  //UIColor.bluePJ()
+    // MARK: Public properties
 
-    public var alviableSlotHourLabelFont: UIFont //UIFont.diloRoman(size: 17)
-    public var alviableSlotHourLabelTextColor: UIColor  //UIColor.bluePJ()
-    public var alviableSlotBorderColor: UIColor  //UIColor.bluePJ()
+    // MARK: Themes
 
+    /// Button image for the previous alviable slot button
+    public var leftButtonImage: UIImage
+
+    /// Button image for the next alviable slot button
+    public var rightButtonImage: UIImage
+
+    /// Normal state background color for the `AlviableView`
+    public var normalBackgroundColor: UIColor
+
+    /// Highlight state background color for the `AlviableView`
+    public var highlightBackgroundColor: UIColor
+
+    /// Font for the `dayOfWeek` label in the `AlviableView` (jeu.)
+    public var dayOfWeekFont: UIFont
+
+    /// Color for the `dayOfWeek` label in the `AlviableView` (jeu.)
+    public var dayOfWeekColor: UIColor
+
+    /// Font for the `dayNumberOfMonth` label in the `AlviableView` (24)
+    public var dayNumberOfMonthFont: UIFont
+
+    /// Color for the `dayNumberOfMonth` label in the `AlviableView` (24)
+    public var dayNumberOfMonthColor: UIColor
+
+    /// Font for the `alviableSlotHourLabel` label in the `AlviableView` (13h00)
+    public var alviableSlotHourLabelFont: UIFont
+
+    /// Color for the `alviableSlotHourLabel` label in the `AlviableView` (13h00)
+    public var alviableSlotHourLabelTextColor: UIColor
+
+    /// `AlviableView` border color
+    public var borderColor: UIColor
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = AlviableViewStyle(alviableLeftButtonImage: UIImage(),
-                                   alviableRightButtonImage: UIImage(),
-                                   alviableNormalBackgroundColor: UIColor.blue,
-                                   alviableHighlightBackgroundColor: UIColor.white,
-                                   alviableDayOfWeekFont: UIFont.systemFont(ofSize: 17),
-                                   alviableDayOfWeekColor: UIColor.blue,
-                                   alviableDayNumberOfMonthFont: UIFont.systemFont(ofSize: 32),
-                                   alviableDayNumberOfMonthColor: UIColor.blue,
+      let dest = AlviableViewTheme(leftButtonImage: UIImage(),
+                                   rightButtonImage: UIImage(),
+                                   normalBackgroundColor: UIColor.blue,
+                                   highlightBackgroundColor: UIColor.white,
+                                   dayOfWeekFont: UIFont.systemFont(ofSize: 17),
+                                   dayOfWeekColor: UIColor.blue,
+                                   dayNumberOfMonthFont: UIFont.systemFont(ofSize: 32),
+                                   dayNumberOfMonthColor: UIColor.blue,
                                    alviableSlotHourLabelFont: UIFont.systemFont(ofSize: 17),
                                    alviableSlotHourLabelTextColor: UIColor.blue,
-                                   alviableSlotBorderColor: UIColor.blue)
+                                   borderColor: UIColor.blue)
       return dest
     }()
 
   }
 
-  public struct MonthSelectorViewStyle {
-    public var monthSelectorViewLeftButtonEnabledImage: UIImage  // UIImage.resize(#imageLiteral(resourceName: "chevronGauche"), size: KitUIAssetSize._16pt, color: .black)
-    public var monthSelectorViewRightButtoEnablednImage: UIImage // UIImage.resize(#imageLiteral(resourceName: "chevronDroit"), size: KitUIAssetSize._16pt, color: .black)
+  // MARK: - MonthSelectorViewTheme
 
-    public var monthSelectorViewLeftButtonDisabledImage: UIImage  //UIImage.resize(#imageLiteral(resourceName: "chevronGauche"), size: KitUIAssetSize._16pt, color: .grey3())
-    public var monthSelectorViewRightButtonDisabledImage: UIImage  //UIImage.resize(#imageLiteral(resourceName: "chevronDroit"), size: KitUIAssetSize._16pt, color: UIColor.grey3())
+  /// Theme for the `MonthSelectorView`, this view is responsible
+  /// of display and select th current month
+  public struct MonthSelectorViewTheme {
 
+    // MARK: Public properties
+
+    // MARK: Themes
+
+    /// Button for the previous button of the `MonthSelectorView` in the enabled mode
+    public var leftButtonEnabledImage: UIImage
+
+    /// Button for the next button of the `MonthSelectorView` in the enabled mode
+    public var rightButtoEnablednImage: UIImage
+
+    /// Button for the previous button of the `MonthSelectorView` in the disabled mode
+    public var leftButtonDisabledImage: UIImage
+
+    /// Button for the next button of the `MonthSelectorView` in the enabled mode
+    public var rightButtonDisabledImage: UIImage
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = MonthSelectorViewStyle(monthSelectorViewLeftButtonEnabledImage: UIImage(),
-                                        monthSelectorViewRightButtoEnablednImage: UIImage(),
-                                        monthSelectorViewLeftButtonDisabledImage: UIImage(),
-                                        monthSelectorViewRightButtonDisabledImage: UIImage())
+      let dest = MonthSelectorViewTheme(leftButtonEnabledImage: UIImage(),
+                                        rightButtoEnablednImage: UIImage(),
+                                        leftButtonDisabledImage: UIImage(),
+                                        rightButtonDisabledImage: UIImage())
       return dest
     }()
 
   }
 
-  public struct MonthCellStyle {
-    public var monthCellMonthTitleTextColor: UIColor  //UIColor.black
-    public var monthCellMonthTitleTextFont: UIFont // UIFont.systemFont(ofSize: 32) // UIFont.diloRoman(size: 32)
+  // MARK: - MonthCellTheme
 
-    public var monthCellYearTitleTextColor: UIColor // UIColor.black
-    public var monthCellYearTitleTextFont: UIFont // UIFont.systemFont(ofSize: 32) // UIFont.diloRoman(size:
+  /// Theme for the Month cell, represent one month in the `MonthSelectorView`
+  public struct MonthCellTheme {
 
+    // MARK: Public properties
+
+    // MARK: Themes
+
+    /// Describe the text color of the month title of the `MonthCell` (Janvier)
+    public var monthTitleTextColor: UIColor
+
+    /// Describe the text font of the month title of the `MonthCell` (Janvier)
+    public var monthTitleTextFont: UIFont
+
+    /// Describe the text color of the year title of the `MonthCell` (2019)
+    public var yearTitleTextColor: UIColor
+
+    /// Describe the text font of the year title of the `MonthCell` (2019)
+    public var yearTitleTextFont: UIFont
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = MonthCellStyle(monthCellMonthTitleTextColor: UIColor.black,
-                                monthCellMonthTitleTextFont: UIFont.systemFont(ofSize: 32),
-                                monthCellYearTitleTextColor: UIColor.black,
-                                monthCellYearTitleTextFont: UIFont.systemFont(ofSize: 32))
+      let dest = MonthCellTheme(monthTitleTextColor: UIColor.black,
+                                monthTitleTextFont: UIFont.systemFont(ofSize: 32),
+                                yearTitleTextColor: UIColor.black,
+                                yearTitleTextFont: UIFont.systemFont(ofSize: 17))
       return dest
     }()
 
   }
 
-  public struct HeaderViewStyle {
-    public var headerViewSepararorColor: UIColor  // UIColor.grey3()
+  // MARK: - HeaderViewTheme
 
+  /// Theme for the `HeaderView` container for the `MonthSelectorView` and the `DaySelectorView`
+  public struct HeaderViewTheme {
+
+    // MARK: Public properties
+
+    // MARK: Themes
+
+    /// Describe the color between the `DayViewSelector`, the `MonthSelectorView` and the slots
+    public var separarorColor: UIColor
+
+    // MARK: Static Properties
+
+    // MARK: Default theme
+
+    /// Default theme
     public static let `default`: Self = {
-      let dest = HeaderViewStyle(headerViewSepararorColor: UIColor.gray)
+      let dest = HeaderViewTheme(separarorColor: UIColor.gray)
       return dest
     }()
-
   }
 }
