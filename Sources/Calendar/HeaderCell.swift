@@ -87,6 +87,7 @@ class HeaderCell: UICollectionReusableView {
   /// Display a View where the user can select a Month
   private var monthView: MonthSelectorView?
 
+  /// Store the `CalendarViewController` theme
   private var theme: CalendarViewControllerTheme? {
     didSet {
       if oldValue == nil {

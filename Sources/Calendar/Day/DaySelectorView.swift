@@ -38,13 +38,15 @@ class DaySelectorView: UIView {
     }
   }
 
+  // MARK: ViewModel
+
   /// DaySelectorView viewModel, provide all information, and perform user action
   private let viewModel: DayListViewModel
 
-  private let theme: CalendarViewControllerTheme
+  // MARK: Theme
 
-  /// `DaySelectorView` delegate, notify all user interactions
-  weak var delegate: DaySelectorViewDelegate?
+  /// Store the `CalendarViewController` theme
+  private let theme: CalendarViewControllerTheme
 
   // MARK: UIView
 
@@ -69,6 +71,11 @@ class DaySelectorView: UIView {
 
   /// Spinner add inside the collectionView during lazy loading process
   private let spinner = UIActivityIndicatorView(style: .gray)
+
+  // MARK: Public properties
+
+  /// `DaySelectorView` delegate, notify all user interactions
+  weak var delegate: DaySelectorViewDelegate?
 
   // MARK: Private methods
 

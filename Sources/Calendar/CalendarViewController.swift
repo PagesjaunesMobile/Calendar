@@ -30,7 +30,9 @@ public class CalendarViewController: UIViewController {
 
   // MARK: ViewModels
 
-  /// Theme
+  // MARK: Theme
+
+  /// Store the `CalendarViewController` theme
   private let theme: CalendarViewControllerTheme
 
   /// DayListView `ViewModel`
@@ -324,6 +326,11 @@ public class CalendarViewController: UIViewController {
     self.setupDataController()
     self.setupStyle()
     self.setupButtons()
+  }
+
+  override public func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    self.delegate?.calendar(self, calendarDidAppearOnViewController: self.presentingViewController)
   }
 
   override public func viewDidLoad() {

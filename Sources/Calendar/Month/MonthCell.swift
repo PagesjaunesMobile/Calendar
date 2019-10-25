@@ -20,14 +20,6 @@ class MonthCell: UICollectionViewCell {
   /// Id which should be use to register the cell in the `UICollectionView`
   static let reuseCellIdentifier: String = String(describing: MonthCell.self)
 
-  private var theme: CalendarViewControllerTheme? {
-    didSet {
-      if oldValue == nil {
-        self.setupTheme()
-      }
-    }
-  }
-
   // MARK: Private properties
 
   // MARK: UIView
@@ -57,6 +49,17 @@ class MonthCell: UICollectionViewCell {
     dest.translatesAutoresizingMaskIntoConstraints = false
     return dest
   }()
+
+  // MARK: Theme
+
+  /// Store the `CalendarViewController` theme
+  private var theme: CalendarViewControllerTheme? {
+    didSet {
+      if oldValue == nil {
+        self.setupTheme()
+      }
+    }
+  }
 
   /// Setup the cell subview layout
   private func setupLayout() {

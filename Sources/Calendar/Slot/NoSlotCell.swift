@@ -44,6 +44,9 @@ class NoSlotCell: UICollectionViewCell {
   /// optional because of the recycle system of the `UICollectionView`
   private var viewModel: NoSlotCellViewModel?
 
+  // MARK: Theme
+  
+  /// Store the `CalendarViewController` theme
   private var theme: CalendarViewControllerTheme? {
     didSet {
       if oldValue == nil {

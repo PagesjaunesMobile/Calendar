@@ -9,12 +9,21 @@ import Foundation
 
 extension CalendarViewController {
 
+  // MARK: - Configuration
+
   public struct Configuration {
 
+    // MARK: - CellSize
+
     public enum CellSize {
+
+      // Display Cell in normal size
       case normal
+
+      // Display Cell in big size
       case big
 
+      /// Return if the current state is a bigSize or not
       var isBigCell: Bool {
         switch self {
         case .normal:
@@ -25,13 +34,26 @@ extension CalendarViewController {
       }
     }
 
-    
+
+    /// Theme of the `CalendarViewController`
     let theme: CalendarViewControllerTheme
+
+    /// Provide Days, slots and fetch method to `CalendarViewController`
     let dataProvider: CalendarDataProvider
+
+    /// Describe the period formating for slots (moring / afternon)
     let periodFormater: CalendarPeriodFormater
+
+    /// locale to use on the month / day and hour display
     let locale: Locale
+
+    /// Describe if the header should use Blur Effect View
     let shouldUseEffectView: Bool
+
+    /// Define the cell size mode (normal or big)
     let cellSize: CellSize
+
+    /// Set the `CalendarViewControllerDelegate` to the `CalendarViewController`, the delegate can be set latter
     let calendarViewControllerDelegate: CalendarViewControllerDelegate?
     
     public init(dataProvider: CalendarDataProvider,
@@ -49,8 +71,6 @@ extension CalendarViewController {
       self.theme = theme
       self.cellSize = cellSize
     }
-
-
   }
   
 }

@@ -27,7 +27,7 @@ extension AvailableView {
     // MARK: Computed public properties
 
     /// Return a left or a right arrow image
-    func imageWith(theme: CalendarViewControllerTheme) -> UIImage {
+    func imageWith(theme: CalendarViewControllerTheme) -> UIImage? {
       switch self {
       case .next:
         return theme.alviableView.rightButtonImage
@@ -76,8 +76,6 @@ extension AvailableView {
 /// thoses days are display by this view
 class AvailableView: UIButton {
 
-  private let theme: CalendarViewControllerTheme
-
   // MARK: Public Properties
 
   // MARK: UIButton override
@@ -100,6 +98,11 @@ class AvailableView: UIButton {
   /// Describe the display mode of the view,
   /// the day to represent if before or after the current day
   private let mode: Mode
+
+  // MARK: Theme
+
+  /// Store the `CalendarViewController` theme
+  private let theme: CalendarViewControllerTheme
 
   // MARK: UIView
 

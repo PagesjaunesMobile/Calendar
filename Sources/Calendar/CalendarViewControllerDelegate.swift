@@ -8,9 +8,18 @@
 import Foundation
 import UIKit
 
+// MARK: - CalendarViewControllerDelegate
+
+/// `CalendarViewController` Delegate, conform to this protocol to
+/// be notify of `CalendarViewController` user actions
+public typealias CalendarViewControllerDelegate =
+  CalendarViewControllerOptionalDelegate &
+  CalendarViewControllerRequiredDelegate
+
 // MARK: CalendarViewControllerRequiredDelegate
 
 public protocol CalendarViewControllerRequiredDelegate: class {
+
   /// Called when the user tap on the cancel button
   func calendar(_ calendar: CalendarViewController, didTapOnCancelButton button: UIButton)
 
@@ -19,13 +28,14 @@ public protocol CalendarViewControllerRequiredDelegate: class {
 }
 
 public protocol CalendarViewControllerOptionalDelegate: class {
+
   // MARK: Optional
 
   /// Called when the user tap on slot
   func calendar(_ calendar: CalendarViewController, didSelectDateAtIndexPath indexPath: IndexPath)
 
   /// Called when the `CalendarViewController` is presented
-  func calendar(_ calendar: CalendarViewController, calendarDidAppearOnViewController: UIViewController)
+  func calendar(_ calendar: CalendarViewController, calendarDidAppearOnViewController: UIViewController?)
 
   /// Called when the user tap on the next dispo button (when there is no slot for the select day)
   func calendar(_ calendar: CalendarViewController, didTapOnNextDispoButton button: UIButton)
@@ -49,14 +59,11 @@ public protocol CalendarViewControllerOptionalDelegate: class {
   func calendar(_ calendar: CalendarViewController, didSelectPeriod period: SlotHeaderCellDelegatePeriod, onSender: UIView)
 }
 
-// MARK: - CalendarViewControllerDelegate
-
-/// `CalendarViewController` Delegate, conform to this protocol to be notify of `CalendarViewController` user actions
-public typealias CalendarViewControllerDelegate = CalendarViewControllerOptionalDelegate & CalendarViewControllerRequiredDelegate
 
 // MARK: - Optional Delegate extension
 
 extension CalendarViewControllerOptionalDelegate {
+
   func calendar(_ calendar: CalendarViewController, didTapOnNextDispoButton button: UIButton) {}
   func calendar(_ calendar: CalendarViewController, didTapOnPreviousDispoButton button: UIButton) {}
 
@@ -66,7 +73,7 @@ extension CalendarViewControllerOptionalDelegate {
 
   func calendar(_ calendar: CalendarViewController, didTapOnPreviousMonthButton button: UIButton) {}
 
-  func calendar(_ calendar: CalendarViewController, calendarDidAppearOnViewController: UIViewController) {}
+  func calendar(_ calendar: CalendarViewController, calendarDidAppearOnViewController: UIViewController?) {}
 
   func calendar(_ calendar: CalendarViewController, didSelectDay indexPath: IndexPath) {}
 

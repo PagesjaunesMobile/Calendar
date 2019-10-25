@@ -31,6 +31,9 @@ class CalendarSlotCell: UICollectionViewCell {
   /// Cell ViewModel
   private var model: TimeSlotViewModel?
 
+  // MARK: Theme
+
+ /// Store the `CalendarViewController` theme
   private var theme: CalendarViewControllerTheme?  = nil {
     didSet {
       if oldValue == nil {

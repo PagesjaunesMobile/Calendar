@@ -32,6 +32,9 @@ class MonthSelectorView: UIView {
   /// MonthSelectorView viewModel, provide all information, and perform user action
   private let viewModel: MonthListViewModel
 
+  // MARK: Theme
+  
+  /// Store the `CalendarViewController` theme
   private let theme: CalendarViewControllerTheme
 
   /// If the value is true, the collectionView should be reload at the end of
@@ -210,14 +213,31 @@ class MonthSelectorView: UIView {
     self.shouldReloadMonth()
   }
 
-  /// Setup button styles in normal and disable mode
+  /// Setup button styles in normal and disable mode.
+  ///
+  /// If there is no image for previous and nex button, Back and Next text are used
   private func setupStyle() {
 
-    self.leftButton.setImage(self.theme.monthSelectorView.leftButtonEnabledImage, for: .normal)
-    self.leftButton.setImage(self.theme.monthSelectorView.leftButtonDisabledImage, for: .disabled)
-    
-    self.rightButton.setImage(self.theme.monthSelectorView.rightButtoEnablednImage, for: .normal)
-    self.rightButton.setImage(self.theme.monthSelectorView.rightButtonDisabledImage, for: .disabled)
+    self.leftButton.setTitle(nil, for: .normal)
+    self.rightButton.setTitle(nil, for: .normal)
+
+    if self.theme.monthSelectorView.leftButtonEnabledImage == nil {
+      self.leftButton.setTitle("Back", for: .normal)
+      self.leftButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
+      self.leftButton.setTitleColor(UIColor.lightGray, for: UIControl.State.disabled)
+    } else {
+      self.leftButton.setImage(self.theme.monthSelectorView.leftButtonEnabledImage, for: .normal)
+      self.leftButton.setImage(self.theme.monthSelectorView.leftButtonDisabledImage, for: .disabled)
+    }
+
+    if self.theme.monthSelectorView.rightButtoEnablednImage == nil {
+      self.rightButton.setTitle("Next", for: .normal)
+      self.rightButton.setTitleColor(UIColor.black, for: UIControl.State.normal)
+      self.rightButton.setTitleColor(UIColor.lightGray, for: UIControl.State.disabled)
+    } else {
+      self.rightButton.setImage(self.theme.monthSelectorView.rightButtoEnablednImage, for: .normal)
+      self.rightButton.setImage(self.theme.monthSelectorView.rightButtonDisabledImage, for: .disabled)
+    }
   }
 
   /// Setup:

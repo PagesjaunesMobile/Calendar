@@ -36,6 +36,7 @@ class CalendarDataController {
 
   // MARK: Public Observable properties
 
+  /// Dispatch queue for model mapping and the heavy Date processing asynchronously
   private let calendarQueue = DispatchQueue(label: "CalendarDispatchQueue", qos: DispatchQoS.userInteractive)
 
   /// Provide initial data loading state information
@@ -52,8 +53,6 @@ class CalendarDataController {
 
   /// Selected slot Index updated by `updateSelectedSlot` method
   private(set) var selectedSlot: CalendarObservable<Int?> = CalendarObservable<Int?>(nil)
-
-  private let dateFormater: CalendarDateFormater
 
   // MARK: Public Computed properties
 
@@ -84,6 +83,9 @@ class CalendarDataController {
   }
 
   // MARK: Private properties
+
+  /// Store the some DateFormater required to create `CalendarDateFormater` models
+  private let dateFormater: CalendarDateFormater
 
   /// Period formater used to determine the name of the mornig / afternoon period and how it's determined
   private let periodFormater: CalendarPeriodFormater

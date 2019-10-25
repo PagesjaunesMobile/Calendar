@@ -262,10 +262,10 @@ extension CalendarViewControllerTheme {
     // MARK: Themes
 
     /// Button image for the previous alviable slot button
-    public var leftButtonImage: UIImage
+    public var leftButtonImage: UIImage?
 
     /// Button image for the next alviable slot button
-    public var rightButtonImage: UIImage
+    public var rightButtonImage: UIImage?
 
     /// Normal state background color for the `AlviableView`
     public var normalBackgroundColor: UIColor
@@ -300,8 +300,8 @@ extension CalendarViewControllerTheme {
 
     /// Default theme
     public static let `default`: Self = {
-      let dest = AlviableViewTheme(leftButtonImage: UIImage(),
-                                   rightButtonImage: UIImage(),
+      let dest = AlviableViewTheme(leftButtonImage: nil,
+                                   rightButtonImage: nil,
                                    normalBackgroundColor: UIColor.blue,
                                    highlightBackgroundColor: UIColor.white,
                                    dayOfWeekFont: UIFont.systemFont(ofSize: 17),
@@ -327,16 +327,16 @@ extension CalendarViewControllerTheme {
     // MARK: Themes
 
     /// Button for the previous button of the `MonthSelectorView` in the enabled mode
-    public var leftButtonEnabledImage: UIImage
+    public var leftButtonEnabledImage: UIImage?
 
     /// Button for the next button of the `MonthSelectorView` in the enabled mode
-    public var rightButtoEnablednImage: UIImage
+    public var rightButtoEnablednImage: UIImage?
 
     /// Button for the previous button of the `MonthSelectorView` in the disabled mode
-    public var leftButtonDisabledImage: UIImage
+    public var leftButtonDisabledImage: UIImage?
 
     /// Button for the next button of the `MonthSelectorView` in the enabled mode
-    public var rightButtonDisabledImage: UIImage
+    public var rightButtonDisabledImage: UIImage?
 
     // MARK: Static Properties
 
@@ -344,10 +344,10 @@ extension CalendarViewControllerTheme {
 
     /// Default theme
     public static let `default`: Self = {
-      let dest = MonthSelectorViewTheme(leftButtonEnabledImage: UIImage(),
-                                        rightButtoEnablednImage: UIImage(),
-                                        leftButtonDisabledImage: UIImage(),
-                                        rightButtonDisabledImage: UIImage())
+      let dest = MonthSelectorViewTheme(leftButtonEnabledImage: nil,
+                                        rightButtoEnablednImage: nil,
+                                        leftButtonDisabledImage: nil,
+                                        rightButtonDisabledImage: nil)
       return dest
     }()
 

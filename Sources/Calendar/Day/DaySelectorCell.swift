@@ -39,6 +39,7 @@ class DaySelectorCell: UICollectionViewCell {
     return dest
   }()
 
+  /// Store the `CalendarViewController` theme
   private var theme: CalendarViewControllerTheme? {
     didSet {
       if oldValue == nil {
