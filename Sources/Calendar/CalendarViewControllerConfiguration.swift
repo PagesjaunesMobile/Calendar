@@ -11,10 +11,13 @@ extension CalendarViewController {
 
   // MARK: - Configuration
 
+  /// `CalendarViewController` configuration struct,
+  /// contain all required object for `CalendarViewController` instanciation
   public struct Configuration {
 
     // MARK: - CellSize
 
+    /// Define cell size display mode
     public enum CellSize {
 
       // Display Cell in normal size
@@ -33,7 +36,6 @@ extension CalendarViewController {
         }
       }
     }
-
 
     /// Theme of the `CalendarViewController`
     let theme: CalendarViewControllerTheme
@@ -55,7 +57,15 @@ extension CalendarViewController {
 
     /// Set the `CalendarViewControllerDelegate` to the `CalendarViewController`, the delegate can be set latter
     let calendarViewControllerDelegate: CalendarViewControllerDelegate?
-    
+
+    /// `CalendarViewController` Configuration init
+    /// - Parameter dataProvider: Provide date information to `CalendarViewController`
+    /// - Parameter theme: selected `CalendarViewController` theme
+    /// - Parameter periodFormater: `CalendarViewController` Period formater, define if a day is Morning or Afternoon
+    /// - Parameter locale: Locale object to use in order to format date string (exemple October)
+    /// - Parameter shouldUseEffectView: Define if the `VisualEffectView`
+    /// - Parameter cellSize: Display mode (big or small cell size)
+    /// - Parameter calendarViewControllerDelegate: `CalendarViewController`
     public init(dataProvider: CalendarDataProvider,
                 theme: CalendarViewControllerTheme = CalendarViewControllerTheme.default,
                 periodFormater: CalendarPeriodFormater = DefaultCalendarPeriodFormater(),

@@ -212,12 +212,15 @@ class CalendarDataController {
   // MARK: Init
 
   /// Init of `CalendarDataController`,
-  /// required 2 dependencies injections, the `CalendarDataProvider` to retrive data from an unknow source and
-  /// `CalendarPeriodFormater` in order to format "Matin / Apres midi" from outside the `CalendarDataController`
+  /// required 3 dependencies injections:
+  /// - `CalendarDataProvider` to retrive data from an unknow source
+  /// - `CalendarPeriodFormater` in order to format "Matin / Apres midi" from outside the `CalendarDataController`
+  /// - `Locale` object, used by the `CalendarDataController` to format date text (October)
   ///
   /// - Parameters:
-  ///   - dataProvider: concrete implentation of `CalendarDataProvider`
-  ///   - periodFormater: concrete implentation of `CalendarPeriodFormater`
+  ///   - dataProvider: Concrete implentation of `CalendarDataProvider`
+  ///   - periodFormater: Concrete implentation of `CalendarPeriodFormater`
+  ///   - locale: System Local object used to generate date text: (October)
   init(dataProvider: CalendarDataProvider, periodFormater: CalendarPeriodFormater, locale: Locale) {
     self.dataProvider = dataProvider
     self.periodFormater = periodFormater
