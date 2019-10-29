@@ -240,12 +240,25 @@ class MonthSelectorView: UIView {
     }
   }
 
+  /// Setup the accessibility
+  private func setupAccessibility() {
+    self.leftButton.isAccessibilityElement = false
+    self.rightButton.isAccessibilityElement = false
+
+    self.leftButton.accessibilityIdentifier = "CALENDAR PREVIOUS MONTH"
+    self.rightButton.accessibilityIdentifier = "CALENDAR NEXT MONTH"
+
+    self.collectionView.isAccessibilityElement = false
+    self.collectionView.accessibilityIdentifier = "CALENDAR MONTH COLLECTION VIEW"
+  }
+
   /// Setup:
   /// - View hierarchy
   /// - Layout
   /// - the CollectionView
   /// - the viewModel
   /// - buttons
+  /// - setup accessibility
   private func setup() {
     self.setupStyle()
     self.setupView()
@@ -253,6 +266,7 @@ class MonthSelectorView: UIView {
     self.setupCollectionView()
     self.setupViewModel()
     self.setupButtons()
+    self.setupAccessibility()
   }
 
   // MARK: Public properties

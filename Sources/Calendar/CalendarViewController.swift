@@ -260,6 +260,17 @@ public class CalendarViewController: UIViewController {
     NSLayoutConstraint.activate(constraints)
   }
 
+  private func setupAccessibility() {
+    self.view.isAccessibilityElement = false
+    self.view.accessibilityIdentifier = "CALENDAR MAIN"
+
+    self.collectionView.isAccessibilityElement = false
+    self.collectionView.accessibilityIdentifier = "CALENDAR SLOT LIST"
+
+    self.okButton.isAccessibilityElement = false
+    self.okButton.accessibilityIdentifier = "CALENDAR OK BUTTON"
+  }
+
   /// Setup the view hierarchy
   private func setupView() {
     self.view.addSubview(self.collectionView)
@@ -271,6 +282,12 @@ public class CalendarViewController: UIViewController {
   /// Setup the viewModel delegate
   private func setupViewModel() {
     self.slotListViewModel.delegate = self
+
+    self.slotListViewModel.accessibilitySelectedSlotValue.bind { [weak self] _, newSlotAccessibilityValue in
+      guard let `self` = self else { return }
+      self.collectionView.accessibilityValue = newSlotAccessibilityValue
+    }
+    self.collectionView.accessibilityValue = self.slotListViewModel.accessibilitySelectedSlotValue.value
   }
 
   /// handle when the user touch the cancel button
@@ -326,6 +343,7 @@ public class CalendarViewController: UIViewController {
     self.setupDataController()
     self.setupStyle()
     self.setupButtons()
+    self.setupAccessibility()
   }
 
   override public func viewDidAppear(_ animated: Bool) {

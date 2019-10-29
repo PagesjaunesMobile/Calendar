@@ -65,6 +65,9 @@ class DayListViewModel {
   /// Describe the indexPath to select on the CollectionView
   private (set) var selectedIndexPath = CalendarObservable<IndexPath>(IndexPath.init(row: 0, section: 0))
 
+  /// Describe the Accessibility value of the glassView
+  private (set) var glassViewAccessibilityValue = CalendarObservable<String>("")
+
   // MARK: Computed Public properties
 
   /// Day count to display usefull in `UICollectionViewDatasource` `cellForItemAt`
@@ -124,6 +127,8 @@ class DayListViewModel {
       if self.selectedIndexPath.value != IndexPath(item: selectedDay, section: 0) && selectedDay < days.count {
         self.selectedIndexPath.value = IndexPath(item: selectedDay, section: 0)
       }
+      guard let model = self[IndexPath(item: selectedDay, section: 0)] else { return }
+      self.glassViewAccessibilityValue.value = model.accessibilityValue
     case .notReady:
       break
     }

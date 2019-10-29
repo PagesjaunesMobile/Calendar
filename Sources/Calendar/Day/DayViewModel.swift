@@ -32,6 +32,9 @@ class DayViewModel {
   /// Day number in the month (28)
   let dayNumber: String
 
+  /// Accessibility text representation
+  let accessibilityValue: String
+
   // MARK: Public methods
 
   // MARK: Slots accessors
@@ -91,6 +94,7 @@ class DayViewModel {
   init(model: DayDataControllerModel, dataController: CalendarDataController) {
     self.originalModel = model
     self.dayOfTheWeek = model.shortDayText
+    self.accessibilityValue = model.realDate.description
 
     self.dayNumber = model.dayNumberText
     self.slotsViewModel = self.originalModel.slots.map { TimeSlotViewModel(model: $0, dataController: dataController) }

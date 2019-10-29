@@ -48,6 +48,9 @@ class TimeSlotListViewModel {
 
   // MARK: Read only Public properties
 
+  /// Observable property describe the accessibility value to set in the slot collectionView
+  private (set) var accessibilitySelectedSlotValue = CalendarObservable<String>("No Slot")
+
   /// Observable property describe the period to activate in the `SlotheaderCell` segmentedControl.
   private (set) var segmentedControlIndexToDisplay = CalendarObservable<Int>(0)
 
@@ -129,15 +132,18 @@ class TimeSlotListViewModel {
   /// - Parameter displayState: new display state value
   private func updateObservable(from displayState: DisplayState) {
     switch displayState {
-    case .timeSlot:
+    case .timeSlot(day: _, period: _, slot: let slot):
       if self.segmentedControlIndexToDisplay.value != displayState.segmentedControllPeriodIndex {
         self.segmentedControlIndexToDisplay.value = displayState.segmentedControllPeriodIndex
       }
 
+      guard let slot = slot else { return }
+      self.accessibilitySelectedSlotValue.value = slot.displayText
+      
     case .timeSlotEmpty(previousDayWithSlot: _, nextDayWithSlot: _):
-      break
+      self.accessibilitySelectedSlotValue.value = "No Slot"
     case .notReady:
-      break
+      self.accessibilitySelectedSlotValue.value = "No Slot"
     }
   }
 

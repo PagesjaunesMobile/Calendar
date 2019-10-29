@@ -150,6 +150,13 @@ class DaySelectorView: UIView {
       DispatchQueue.main.async { self.selectItem(at: indexPath) }
     }
 
+    self.viewModel.glassViewAccessibilityValue.bind { [weak self] _, newValue in
+      guard let `self` = self else { return }
+      self.glassView.accessibilityValue = newValue
+    }
+
+    self.glassView.accessibilityValue = self.viewModel.glassViewAccessibilityValue.value
+
     self.viewModel.delegate = self
   }
 
@@ -159,15 +166,27 @@ class DaySelectorView: UIView {
     self.glassView.layer.cornerRadius = 7.0
   }
 
+  /// Setup the accessibility
+    private func setupAccessibility() {
+      self.glassView.isAccessibilityElement = false
+      self.isAccessibilityElement = false
+      self.glassView.accessibilityIdentifier = "CALENDAR GLASS VIEW"
+
+       self.collectionView.isAccessibilityElement = false
+      self.collectionView.accessibilityLabel = "CALENDAR DAY COLLECTION VIEW"
+    }
+
   /// Setup:
   /// - View hierarchy
   /// - Subview layout
   /// - CollectionView configuration
   /// - Setup ViewModel (subscribe to Observable properties and set the delegate)
   /// - Setup view theme
+  /// - Setup accesibility
   private func setup() {
     self.setupView()
     self.setupLayout()
+    self.setupAccessibility()
     self.setupCollectionView()
     self.setupViewModel()
     self.setupTheme()
