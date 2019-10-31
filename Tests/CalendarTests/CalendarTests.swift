@@ -7,7 +7,8 @@ final class CalendarTests: XCTestCase {
     let dataProvider = MockDataProvider()
     let dataController = CalendarDataController(dataProvider: dataProvider,
                                                 periodFormater: DefaultCalendarPeriodFormater(),
-                                                locale: Locale.current)
+                                                locale: Locale(identifier: "fr_FR"))
+
     XCTAssert(dataController.initialLoadingState.value == .loading, "initialLoadingState should be ready")
 
     let stateReadyExpectation = XCTestExpectation(description: "initial state ready")
@@ -81,4 +82,64 @@ final class CalendarTests: XCTestCase {
 
     wait(for: [selectedDayExcpetation, selectedSlotExcpectaton], timeout: 5.0)
   }
+
+  func testDayViewModel() {
+    let dataProvider = MockDataProvider()
+    let dataController = CalendarDataController(dataProvider: dataProvider,
+                                                periodFormater: DefaultCalendarPeriodFormater(),
+                                                locale: Locale(identifier: "fr_FR"))
+
+    dataController.loadData()
+    let viewModel = DayViewModel(model: dataController.days.value.first!, dataController: dataController)
+
+    XCTAssert(viewModel.dayNumber == "11", "Day number text is invalid")
+    XCTAssert(viewModel.dayOfTheWeek == "mer.", "Mardi")
+    XCTAssert(viewModel.morningSlots.isEmpty == false, "Some afternoon slot should be present")
+  }
+
+  func testMonthViewModel() {
+    let dataProvider = MockDataProvider()
+    let dataController = CalendarDataController(dataProvider: dataProvider,
+                                                periodFormater: DefaultCalendarPeriodFormater(),
+                                                locale: Locale(identifier: "fr_FR"))
+
+    dataController.loadData()
+    let month = MonthViewModel(model: dataController.days.value, dataController: dataController)!
+
+    XCTAssert(month.monthText == "Février", "Month text should be fevrier")
+    XCTAssert(month.yearText == "1987", "Year text should be 1987")
+
+    let selectedDayExpectation = XCTestExpectation(description: "Sected day")
+
+    dataController.selectedDay.bind { _, dayIndex in
+      selectedDayExpectation.fulfill()
+    }
+
+    month.userWantToShowDayOfThisMonth()
+    wait(for: [selectedDayExpectation], timeout: 5.0)
+  }
+
+  func testSlotViewModel() {
+    let dataProvider = MockDataProvider()
+    let dataController = CalendarDataController(dataProvider: dataProvider,
+                                                periodFormater: DefaultCalendarPeriodFormater(),
+                                                locale: Locale(identifier: "fr_FR"))
+
+    dataController.loadData()
+    let slotViewModel = TimeSlotViewModel(model: dataController.days.value.first!.slots.first!, dataController: dataController)
+
+    XCTAssert(slotViewModel.displayText == "14h00", "diplay text shoud be 14h00")
+
+    let expectation = XCTestExpectation(description: "selectedSlot")
+
+    dataController.selectedSlot.bind { _, selectedSlotIndex in
+      if selectedSlotIndex != nil {
+        expectation.fulfill()
+      }
+    }
+
+    _ = dataController.updateSelectedSlot(slot: dataController.days.value.first!.slots.first!)
+    wait(for: [expectation], timeout: 5.0)
+  }
+
 }
