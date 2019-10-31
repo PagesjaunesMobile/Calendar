@@ -2,14 +2,83 @@ import XCTest
 @testable import Calendar
 
 final class CalendarTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-//        XCTAssertEqual(Calendar().text, "Hello, World!")
+
+  func testDataController() {
+    let dataProvider = MockDataProvider()
+    let dataController = CalendarDataController(dataProvider: dataProvider,
+                                                periodFormater: DefaultCalendarPeriodFormater(),
+                                                locale: Locale.current)
+    XCTAssert(dataController.initialLoadingState.value == .loading, "initialLoadingState should be ready")
+
+    let stateReadyExpectation = XCTestExpectation(description: "initial state ready")
+    let stateLoadingExpectation = XCTestExpectation(description: "initial state loading")
+    let daysExpectation = XCTestExpectation(description: "days")
+
+    dataController.initialLoadingState.bind { _, value  in
+      if value == .loading {
+        stateLoadingExpectation.fulfill()
+      }
+      if value == .ready {
+        stateReadyExpectation.fulfill()
+      }
     }
 
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+    XCTAssert(dataController.days.value.isEmpty == true, "Days should be empty")
+
+    dataController.days.bind { _, models in
+      if models.isEmpty == false {
+        daysExpectation.fulfill()
+      }
+    }
+
+    dataController.loadData()
+    wait(for: [stateReadyExpectation,
+               stateLoadingExpectation,
+               daysExpectation], timeout: 5.0)
+
+    XCTAssert(dataController.lazyLoadingState.value == .ready, "lazyLoadingState should be ready")
+
+    let lazystateNoResult = XCTestExpectation(description: "lazy state noResult")
+    let lazystateLoading = XCTestExpectation(description: "lazy state ready")
+    let moreDays = XCTestExpectation(description: "more days")
+
+    dataController.lazyLoadingState.bind { _, state in
+      if state == .loading {
+        lazystateLoading.fulfill()
+      }
+      if state == .ready{
+        lazystateNoResult.fulfill()
+      }
+    }
+
+    dataController.days.bind { _, days in
+      if days.count == 2 {
+        moreDays.fulfill()
+      }
+    }
+
+    dataController.loadNextResult()
+    wait(for: [lazystateNoResult, lazystateLoading, moreDays], timeout: 5.0)
+
+    let selectedDayExcpetation = XCTestExpectation(description: "selected day")
+    let selectedSlotExcpectaton = XCTestExpectation(description: "selected slot")
+
+    dataController.selectedDay.bind { _ , dayIndex in
+      if dayIndex == 0 {
+        selectedDayExcpetation.fulfill()
+      }
+    }
+
+    dataController.updateSelectedDay(day: dataController.days.value.first!)
+
+    dataController.selectedSlot.bind { _, slot in
+      if slot == 0 {
+        selectedSlotExcpectaton.fulfill()
+      }
+    }
+
+    _ = dataController.updateSelectedSlot(slot: dataController.days.value.first!.slots.first!)
+
+    wait(for: [selectedDayExcpetation, selectedSlotExcpectaton], timeout: 5.0)
+  }
 }
