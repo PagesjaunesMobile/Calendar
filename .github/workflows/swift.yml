@@ -8,4 +8,4 @@ jobs:
     - name: Generate XCodeproj
       run: swift package generate-xcodeproj
     - name: Run tests
-      run: xcodebuild test -scheme Calendar-Package -destination platform="iOS Simulator,name=iPhone Xʀ,OS=12.2"
+      run: xcodebuild test -scheme Calendar-Package -destination platform="iOS Simulator,name=iPhone Xs Max,OS=12.4"
