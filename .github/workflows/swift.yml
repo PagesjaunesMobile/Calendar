@@ -1,0 +1,11 @@
+name: Test SPM
+on: [push]
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Generate XCodeproj
+      run: swift package generate-xcodeproj
+    - name: Run tests
+      run: xcodebuild test -scheme Calendar-Package -destination platform="iOS Simulator,name=iPhone Xʀ,OS=12.2"
