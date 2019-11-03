@@ -1,4 +1,4 @@
-# Calendar
+# CalendarUI
 
 CI Status : [![Build Status](https://app.bitrise.io/app/49e724b284f8d3d4/status.svg?token=KWBztCJmwwr7JNIf6vRnnw&branch=master)](https://app.bitrise.io/app/49e724b284f8d3d4)
 
