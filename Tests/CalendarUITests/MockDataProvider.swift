@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import Calendar
+@testable import CalendarUI
 
 class MockDataProvider: CalendarDataProvider {
 
