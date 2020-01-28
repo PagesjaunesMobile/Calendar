@@ -1,0 +1,40 @@
+protocol CalendarDataProvider
+enum CalendarDataProviderResult
+case CalendarDataProviderResult.error
+case CalendarDataProviderResult.noResult
+case CalendarDataProviderResult.success(days: [DayDataProviderModel])
+typealias CalendarObservable.Observer
+func CalendarObservable.bind(observer: @escaping Observer)
+init CalendarObservable(_: ObservedType)
+var CalendarObservable.value { get set }
+protocol CalendarPeriodFormater
+class CalendarViewController: UIViewController, CalendarViewLayoutDelegate, DaySelectorViewDelegate, MonthSelectorViewDelegate, NoSlotCellDelegate, SlotHeaderCellDelegate, TimeSlotListViewModelDelegate, UICollectionViewDataSource, UICollectionViewDelegate
+weak var CalendarViewController.delegate { get set }
+init CalendarViewController(configuration: Configuration)
+typealias CalendarViewControllerDelegate
+protocol CalendarViewControllerOptionalDelegate: class
+protocol CalendarViewControllerRequiredDelegate: class
+struct CalendarViewControllerTheme
+static var CalendarViewControllerTheme.`default` { get }
+var CalendarViewControllerTheme.alviableView { get set }
+var CalendarViewControllerTheme.daySelectorCell { get set }
+var CalendarViewControllerTheme.daySelectorView { get set }
+var CalendarViewControllerTheme.header { get set }
+var CalendarViewControllerTheme.monthCell { get set }
+var CalendarViewControllerTheme.monthSelectorView { get set }
+var CalendarViewControllerTheme.noSlotCell { get set }
+var CalendarViewControllerTheme.okCancelButtons { get set }
+var CalendarViewControllerTheme.slotCell { get set }
+struct DayDataProviderModel
+init DayDataProviderModel(originalDate: Date, slots: [SlotDataProviderModel])
+struct DefaultCalendarPeriodFormater: CalendarPeriodFormater
+var DefaultCalendarPeriodFormater.afternoonName { get set }
+init DefaultCalendarPeriodFormater()
+func DefaultCalendarPeriodFormater.isAfternoon(date: Date) -> Bool
+var DefaultCalendarPeriodFormater.morningName { get set }
+init SlotDataControllerModel(model: SlotDataProviderModel, dateformater: CalendarDataController.CalendarDateFormater, periodFormater: CalendarPeriodFormater)
+struct SlotDataProviderModel
+init SlotDataProviderModel(originalDate: Date, code: String)
+enum SlotHeaderCellDelegatePeriod
+case SlotHeaderCellDelegatePeriod.afternoon
+case SlotHeaderCellDelegatePeriod.morning
