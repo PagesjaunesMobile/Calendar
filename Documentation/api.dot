@@ -1,0 +1,7 @@
+digraph Anonymous {
+  
+  "CalendarViewControllerRequiredDelegate" -> "class";
+  "CalendarViewControllerOptionalDelegate" -> "class";
+  "CalendarViewController" -> "UIViewController";
+  "DefaultCalendarPeriodFormater" -> "CalendarPeriodFormater";
+}
