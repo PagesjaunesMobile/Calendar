@@ -4,7 +4,7 @@ doc:
 	echo "✅ swift-dcov"
 	swift-dcov Sources > Documentation/dcov.json
 	echo "✅ swift-api-inventory"
-	swift-api-inventory Sources > Documentation/api.txt
+	swift-api-inventory Sources > Documentation/publicInterface.txt
 	echo "✅ swift-api-diagram"
 	swift-api-diagram Sources > Documentation/api.dot
 	echo "✅ dot"
