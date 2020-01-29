@@ -1,22 +1,22 @@
 # Types
 
-  - [CalendarDataProviderResult](CalendarDataProviderResult)
-  - [CalendarViewController](CalendarViewController)
-  - [CalendarViewControllerTheme](CalendarViewControllerTheme)
-  - [DayDataProviderModel](DayDataProviderModel)
-  - [DefaultCalendarPeriodFormater](DefaultCalendarPeriodFormater)
-  - [SlotDataProviderModel](SlotDataProviderModel)
-  - [SlotHeaderCellDelegatePeriod](SlotHeaderCellDelegatePeriod)
+  - [CalendarDataProviderResult](CalendarDataProviderResult.md)
+  - [CalendarViewController](CalendarViewController.md)
+  - [CalendarViewControllerTheme](CalendarViewControllerTheme.md)
+  - [DayDataProviderModel](DayDataProviderModel.md)
+  - [DefaultCalendarPeriodFormater](DefaultCalendarPeriodFormater.md)
+  - [SlotDataProviderModel](SlotDataProviderModel.md)
+  - [SlotHeaderCellDelegatePeriod](SlotHeaderCellDelegatePeriod.md)
 
 # Protocols
 
-  - [CalendarDataProvider](CalendarDataProvider)
-  - [CalendarPeriodFormater](CalendarPeriodFormater)
-  - [CalendarViewControllerOptionalDelegate](CalendarViewControllerOptionalDelegate)
-  - [CalendarViewControllerRequiredDelegate](CalendarViewControllerRequiredDelegate)
+  - [CalendarDataProvider](CalendarDataProvider.md)
+  - [CalendarPeriodFormater](CalendarPeriodFormater.md)
+  - [CalendarViewControllerOptionalDelegate](CalendarViewControllerOptionalDelegate.md)
+  - [CalendarViewControllerRequiredDelegate](CalendarViewControllerRequiredDelegate.md)
 
 # Globals
 
 ## Typealiases
 
-  - [CalendarViewControllerDelegate](CalendarViewControllerDelegate)
+  - [CalendarViewControllerDelegate](CalendarViewControllerDelegate.md)
